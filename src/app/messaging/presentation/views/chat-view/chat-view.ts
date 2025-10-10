@@ -9,7 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 
-
+/**
+ * ChatView Component
+ * @description A placeholder component for individual chat view. Users are encouraged to use the conversations list for a full experience.
+ */
 @Component({
   selector: 'app-chat-view',
   standalone: true,
