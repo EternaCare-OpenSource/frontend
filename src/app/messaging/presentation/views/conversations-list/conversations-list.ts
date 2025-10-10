@@ -14,6 +14,11 @@ import {IamStore} from '../../../../iam/application/iam.store';
 import {Conversation} from '../../../domain/model/conversation.entity';
 import {Message} from '../../../domain/model/message.entity';
 
+/**
+ * ConversationsList Component
+ * @description This component displays a list of conversations and allows users to select and view messages.
+ * It also provides functionality to send new messages and mark messages as read.
+ */
 @Component({
   selector: 'app-conversations-list',
   standalone: true,
@@ -81,6 +86,13 @@ export class ConversationsList {
     this.markMessagesAsRead(conversation.id);
   }
 
+  /**
+   * Sends a new message to the selected conversation.
+   * @description This method checks if the user has selected a conversation and if the message text is not empty.
+   * If both conditions are met, it creates a new Message object with the current user's details and the selected conversation ID.
+   * The message is then added to the store and the new message text is cleared.
+   * @throws An error if the user is not logged in or if the selected conversation ID is not available.'
+   */
   sendMessage(): void {
     const text = this.newMessageText().trim();
     const conversationId = this.selectedConversationId();

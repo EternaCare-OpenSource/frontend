@@ -8,6 +8,7 @@ import {MessagingApi} from '../infrastructure/api/messaging-api';
 
 /**
  * State management store for messages and conversations using Angular signals.
+ * @description This store manages the state of messages and conversations, including loading, error handling, and signals for accessing message and conversation data.
  */
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,11 @@ export class MessagingStore {
     this.loadMessages();
   }
 
+  /**
+   * Retrieves a conversation by its ID as a signal.
+   * @param id - The ID of the conversation.
+   * @returns A Signal containing the Conversation object or undefined if not found.
+   */
   getConversationById(id: number): Signal<Conversation | undefined> {
     return computed(() => {
       const convs = this.conversations() || [];
@@ -41,6 +47,11 @@ export class MessagingStore {
     });
   }
 
+  /**
+   * Retrieves a message by its ID as a signal.
+   * @param id - The ID of the message.
+   * @returns A Signal containing the Message object or undefined if not found.
+   */
   getMessageById(id: number): Signal<Message | undefined> {
     return computed(() => {
       const msgs = this.messages() || [];
@@ -48,6 +59,12 @@ export class MessagingStore {
     });
   }
 
+  /**
+   * Retrieves all messages for a specific conversation as a signal.
+   * @description This signal filters the messages based on the conversation ID.
+   * @returns A Signal containing an array of Message objects.
+   * @param conversationId
+   */
   getMessagesByConversation(conversationId: number): Signal<Message[]> {
     return computed(() => {
       const msgs = this.messages() || [];
@@ -70,6 +87,19 @@ export class MessagingStore {
     });
   }
 
+  /**
+   * Updates an existing message.
+   * @description This method updates the message in the store and sends an API request to update the message on the server.
+   * @param message - The updated message object.
+   * @returns A Promise that resolves when the message is updated successfully.
+   * @throws An error if the update fails.
+   * @description This method updates the message in the store and sends an API request to update the message on the server.
+   * @param message - The updated message object.
+   * @returns A Promise that resolves when the message is updated successfully.
+   * @throws An error if the update fails.
+   * @description This method updates the message in the store and sends an API request to update the message on the server.
+   * @param updatedMessage
+   */
   updateMessage(updatedMessage: Message): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
