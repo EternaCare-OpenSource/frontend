@@ -17,6 +17,12 @@ import {IamStore} from '../../../application/iam.store';
 import {AppointmentsStore} from '../../../../appointments/application/appointments.store';
 import {MessagingStore} from '../../../../messaging/application/messaging.store';
 
+/**
+ * Profile Component
+ * @description This component handles the profile management functionality for the application.
+ * It includes functionality to edit profile details, change password, manage notification settings,
+ * and manage privacy settings.
+ */
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -52,6 +58,11 @@ export class Profile {
   readonly isEditing = signal(false);
   readonly loading = signal(false);
 
+  /**
+   * User Stats
+   * @description This computed signal returns the user statistics based on the current user's role.
+   * @returns An object containing user statistics for the current user's role.
+   */
   readonly userStats = computed(() => {
     const role = this.currentUser()?.role?.name;
 
