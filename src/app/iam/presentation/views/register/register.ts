@@ -13,6 +13,11 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { IamStore } from '../../../application/iam.store';
 import { User } from '../../../domain/model/user.entity';
 
+/**
+ * Register Component
+ * @description This component handles the registration process for new users.
+ * It includes form validation, password matching, and role selection.
+ */
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -66,6 +71,12 @@ export class Register {
     return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
 
+  /**
+   * Submit Registration
+   * @description This function handles the submission of the registration form.
+   * It validates the form, creates a new user, and navigates to the login page on success.
+   * If registration fails, it displays an error message using the MatSnackBar service.
+   */
   onSubmit(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
@@ -107,6 +118,12 @@ export class Register {
     this.hideConfirmPassword.update(value => !value);
   }
 
+  /**
+   * Get Error Message
+   * @description This function returns the appropriate error message for a given form field.
+   * @param field - The name of the form field.
+   * @returns The error message for the specified field.
+   */
   getErrorMessage(field: string): string {
     const control = this.registerForm.get(field);
 
