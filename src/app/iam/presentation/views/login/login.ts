@@ -11,6 +11,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import {IamStore} from '../../../application/iam.store';
 
 
+/**
+ * Login Component
+ * @description This component handles the login process for the application.
+ */
 @Component({
   selector: 'app-login',
   imports: [
@@ -36,11 +40,21 @@ export class Login {
   readonly hidePassword = signal(true);
   readonly loading = signal(false);
 
+  /**
+   * Login Form Group
+   * @description This form group contains the login form fields and their validators.
+   */
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
+  /**
+   * Submit Login
+   * @description This function handles the submission of the login form.
+   * It validates the form, performs login logic, and navigates to the home page on success.
+   * If login fails, it displays an error message using the MatSnackBar service.
+   */
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
@@ -74,6 +88,12 @@ export class Login {
     this.hidePassword.update(value => !value);
   }
 
+  /**
+   * Get Error Message
+   * @description This function returns the appropriate error message for a given form field.
+   * @param field - The name of the form field.
+   * @returns The error message for the specified field.
+   */
   getErrorMessage(field: string): string {
     const control = this.loginForm.get(field);
 
