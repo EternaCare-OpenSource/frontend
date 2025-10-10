@@ -1,0 +1,212 @@
+{
+  "home": {
+    "title": "Bienvenido a CareLink",
+    "content": "Tu plataforma integral para el cuidado de adultos mayores. Monitorea la salud, gestiona citas y mantente conectado con tu equipo de cuidado.",
+    "features": {
+      "monitoring": {
+        "title": "Monitoreo de Salud",
+        "description": "Seguimiento de signos vitales en tiempo real y registros médicos completos"
+      },
+      "appointments": {
+        "title": "Citas Médicas",
+        "description": "Programa y gestiona citas médicas con recordatorios automáticos"
+      },
+      "messaging": {
+        "title": "Mensajería Segura",
+        "description": "Comunicación directa entre pacientes, doctores y familiares"
+      },
+      "access": {
+        "title": "Control de Acceso",
+        "description": "Permisos basados en roles garantizando privacidad y seguridad de datos"
+      }
+    }
+  },
+  "page-not-found": {
+    "title": "Página No Encontrada",
+    "content": "La página que buscas en <strong>{{invalid_path}}</strong> no existe.",
+    "go-home": "Ir al Inicio"
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "patients": "Pacientes",
+    "doctors": "Doctores",
+    "appointments": "Citas",
+    "messages": "Mensajes",
+    "reports": "Reportes",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "¡Bienvenido de nuevo! Inicia sesión en tu cuenta.",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "forgot-password": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar Sesión",
+      "no-account": "¿No tienes una cuenta?",
+      "sign-up": "Regístrate",
+      "or": "O",
+      "google": "Continuar con Google",
+      "facebook": "Continuar con Facebook"
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "subtitle": "Únete a CareLink para comenzar tu viaje de salud",
+      "first-name": "Nombre",
+      "last-name": "Apellido",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "confirm-password": "Confirmar Contraseña",
+      "role": "Soy un",
+      "terms": "Acepto los Términos y Condiciones y la Política de Privacidad",
+      "submit": "Crear Cuenta",
+      "have-account": "¿Ya tienes una cuenta?",
+      "sign-in": "Inicia sesión"
+    }
+  },
+  "dashboard": {
+    "title": "Panel del Paciente",
+    "vital-signs": {
+      "title": "Signos Vitales",
+      "subtitle": "Últimas lecturas",
+      "heart-rate": "Frecuencia Cardíaca",
+      "blood-pressure": "Presión Arterial",
+      "glucose": "Glucosa",
+      "water": "Consumo de Agua",
+      "temperature": "Temperatura",
+      "oxygen": "Saturación de Oxígeno"
+    },
+    "medications": {
+      "title": "Medicamentos",
+      "subtitle": "Horario de hoy",
+      "taken": "Tomado",
+      "pending": "Pendiente"
+    },
+    "activities": {
+      "title": "Actividades Recientes",
+      "view-all": "Ver Todas"
+    },
+    "recommendations": {
+      "title": "Recomendaciones Médicas",
+      "subtitle": "De tu equipo de cuidado"
+    }
+  },
+  "patients": {
+    "title": "Gestión de Pacientes",
+    "subtitle": "Ver y gestionar todos los pacientes registrados",
+    "search": "Buscar pacientes",
+    "add": "Agregar Nuevo Paciente",
+    "columns": {
+      "name": "Nombre del Paciente",
+      "id": "ID del Paciente",
+      "age": "Edad",
+      "sex": "Sexo",
+      "blood-type": "Tipo de Sangre",
+      "doctor": "Doctor Asignado",
+      "status": "Estado",
+      "register-date": "Fecha de Registro",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "view": "Ver Detalles",
+      "diagnosis": "Ver Diagnóstico",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "status": {
+      "healthy": "Saludable",
+      "critical": "Crítico",
+      "warning": "Advertencia",
+      "stable": "Estable"
+    }
+  },
+  "doctors": {
+    "title": "Gestión de Doctores",
+    "subtitle": "Ver y gestionar el personal médico",
+    "search": "Buscar doctores",
+    "add": "Agregar Nuevo Doctor",
+    "specialization": "Especialización",
+    "cmp-code": "Código CMP",
+    "study-centre": "Centro de Estudios",
+    "phone": "Teléfono",
+    "actions": {
+      "view": "Ver Perfil",
+      "contact": "Contactar",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    }
+  },
+  "appointments": {
+    "title": "Citas Médicas",
+    "subtitle": "Gestiona tus citas",
+    "new": "Nueva Cita",
+    "upcoming": "Próximas Citas",
+    "past": "Citas Pasadas",
+    "calendar": "Vista de Calendario",
+    "list": "Vista de Lista",
+    "form": {
+      "title-new": "Agendar Cita",
+      "title-edit": "Editar Cita",
+      "patient": "Paciente",
+      "doctor": "Doctor",
+      "date": "Fecha",
+      "time": "Hora",
+      "reason": "Motivo de la Visita",
+      "notes": "Notas Adicionales",
+      "submit": "Agendar Cita",
+      "cancel": "Cancelar"
+    },
+    "status": {
+      "scheduled": "Programada",
+      "completed": "Completada",
+      "cancelled": "Cancelada",
+      "no-show": "No Asistió"
+    }
+  },
+  "messaging": {
+    "title": "Mensajes",
+    "subtitle": "Comunicación segura con tu equipo de cuidado",
+    "conversations": "Conversaciones",
+    "new-message": "Nuevo Mensaje",
+    "search": "Buscar mensajes",
+    "type-message": "Escribe un mensaje...",
+    "send": "Enviar",
+    "unread": "sin leer"
+  },
+  "reports": {
+    "title": "Reportes Médicos",
+    "subtitle": "Ve tus resultados de pruebas médicas y reportes",
+    "my-reports": "Mis Reportes",
+    "medical-tests": "Información de Pruebas Médicas",
+    "download": "Descargar",
+    "view": "Ver Reporte",
+    "weekly": "Pruebas Semanales",
+    "monthly": "Pruebas Mensuales",
+    "quarterly": "Pruebas Trimestrales"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No"
+  }
+}

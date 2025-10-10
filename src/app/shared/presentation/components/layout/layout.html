@@ -1,0 +1,139 @@
+<div class="layout-container">
+
+  @if (isAuthenticated()) {
+    <mat-sidenav-container class="sidenav-container">
+
+      <mat-sidenav
+        #sidenav
+        mode="side"
+        [opened]="isSidenavOpen()"
+        class="sidenav">
+
+        <div class="sidebar-header">
+          <div class="logo-container">
+            <img
+              src="https://i.postimg.cc/mrxQYxT5/6bf22840-18a1-43a0-a895-087523b4a860-removebg-preview.png"
+              alt="CareLink Logo"
+              class="logo-image">
+          </div>
+        </div>
+
+        <mat-nav-list class="nav-list">
+          @for (item of menuItems(); track item.route) {
+            <mat-list-item
+              [routerLink]="item.route"
+              routerLinkActive="active-route"
+              class="nav-item">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+              @if (item.icon === 'message' && unreadMessages() > 0) {
+                <span matListItemMeta class="unread-badge">
+                  {{ unreadMessages() }}
+                </span>
+              }
+            </mat-list-item>
+          }
+        </mat-nav-list>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="user-avatar">
+              {{ getUserInitials() }}
+            </div>
+            <div class="user-info">
+              <div class="user-name">
+                {{ currentUser()?.fullName }}
+              </div>
+              <div class="user-role">
+                {{ currentUser()?.role?.name }}
+              </div>
+            </div>
+          </div>
+
+          <button
+            mat-stroked-button
+            class="logout-button"
+            (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Log Out
+          </button>
+        </div>
+      </mat-sidenav>
+
+      <mat-sidenav-content class="main-content">
+        <mat-toolbar class="toolbar">
+          <button
+            mat-icon-button
+            (click)="toggleSidenav()"
+            class="menu-button">
+            <mat-icon>menu</mat-icon>
+          </button>
+
+          <span class="toolbar-spacer"></span>
+
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="notificationsMenu"
+            class="notification-button"
+            [attr.aria-label]="'Notifications: ' + unreadMessages() + ' unread'">
+            <mat-icon
+              [matBadge]="unreadMessages()"
+              matBadgeColor="warn"
+              aria-hidden="false">
+              notifications
+            </mat-icon>
+          </button>
+
+          <mat-menu #notificationsMenu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>message</mat-icon>
+              <span>{{ unreadMessages() }} new messages</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>event</mat-icon>
+              <span>Upcoming appointments</span>
+            </button>
+          </mat-menu>
+
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="userMenu"
+            class="user-menu-button">
+            <div class="user-avatar-small">
+              {{ getUserInitials() }}
+            </div>
+          </button>
+
+          <mat-menu #userMenu="matMenu">
+            <div class="user-menu-header">
+              <div class="user-menu-name">{{ currentUser()?.fullName }}</div>
+              <div class="user-menu-email">{{ currentUser()?.email }}</div>
+            </div>
+            <mat-divider></mat-divider>
+            <button mat-menu-item routerLink="/iam/profile">
+              <mat-icon>person</mat-icon>
+              <span>Profile</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </mat-toolbar>
+
+        <div class="page-content">
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  } @else {
+    <div class="public-layout">
+      <router-outlet></router-outlet>
+    </div>
+  }
+</div>

@@ -1,0 +1,180 @@
+<div class="appointment-form-container">
+
+  <div class="header-section">
+    <button mat-icon-button routerLink="/appointments/calendar" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">{{ isEditMode() ? 'Edit Appointment' : 'Book Appointment' }}</h1>
+  </div>
+
+  <div class="form-layout">
+
+    <div class="main-form">
+      <mat-card class="form-card">
+        <mat-card-content>
+          <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-section">
+              <h3 class="section-title">Emergency Contact</h3>
+              <div class="form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Full name</mat-label>
+                  <input matInput [formControl]="$any(emergencyContactForm.get('fullName')!)" placeholder="Enter contact name">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" [formControl]="$any(emergencyContactForm.get('email')!)" placeholder="contact@example.com">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input matInput type="tel" [formControl]="$any(emergencyContactForm.get('phone')!)" placeholder="+1234567890">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Patient details:</h3>
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Patient Name</mat-label>
+                  <mat-select formControlName="patientId">
+                    @for (patient of patients(); track patient.id) {
+                      <mat-option [value]="patient.id">{{ patient.fullName }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (appointmentForm.get('patientId')?.invalid && appointmentForm.get('patientId')?.touched) {
+                    <mat-error>{{ getErrorMessage('patientId') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput placeholder="Auto-filled from patient" disabled>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>ID</mat-label>
+                  <input matInput placeholder="Patient ID" disabled>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input matInput type="tel" placeholder="Auto-filled" disabled>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Appointment Details</h3>
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Date</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="appointmentDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  @if (appointmentForm.get('appointmentDate')?.invalid && appointmentForm.get('appointmentDate')?.touched) {
+                    <mat-error>{{ getErrorMessage('appointmentDate') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Time</mat-label>
+                  <input matInput type="time" formControlName="appointmentTime">
+                  @if (appointmentForm.get('appointmentTime')?.invalid && appointmentForm.get('appointmentTime')?.touched) {
+                    <mat-error>{{ getErrorMessage('appointmentTime') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Doctor</mat-label>
+                  <mat-select formControlName="doctorId">
+                    @for (doctor of doctors(); track doctor.id) {
+                      <mat-option [value]="doctor.id">Dr. {{ doctor.fullName }} - {{ doctor.specialization }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (appointmentForm.get('doctorId')?.invalid && appointmentForm.get('doctorId')?.touched) {
+                    <mat-error>{{ getErrorMessage('doctorId') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Reason for Visit</mat-label>
+                  <textarea matInput formControlName="reason" rows="3" placeholder="Describe the reason for this appointment"></textarea>
+                  @if (appointmentForm.get('reason')?.invalid && appointmentForm.get('reason')?.touched) {
+                    <mat-error>{{ getErrorMessage('reason') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Additional Notes (Optional)</mat-label>
+                  <textarea matInput formControlName="notes" rows="3" placeholder="Any additional information"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button mat-stroked-button type="button" (click)="cancel()" class="cancel-button">
+                Cancel
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                class="submit-button"
+                [disabled]="loading()">
+                {{ isEditMode() ? 'Update Appointment' : 'Book Appointment' }}
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="payment-sidebar">
+      <mat-card class="payment-card">
+        <mat-card-header>
+          <mat-card-title>Payment Method</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="payment-methods">
+            @for (method of paymentMethods(); track method.name) {
+              <div class="payment-method-item" [class.disabled]="!method.enabled">
+                <div class="method-circle">
+                  <div class="method-inner-circle"></div>
+                </div>
+                <div class="method-details">
+                  @if (method.name === 'Credit Card') {
+                    <mat-icon class="method-icon">credit_card</mat-icon>
+                  } @else if (method.name === 'Yape') {
+                    <div class="payment-logo yape-logo">Yape</div>
+                  } @else if (method.name === 'Plin') {
+                    <div class="payment-logo plin-logo">Plin</div>
+                  } @else if (method.name === 'PagoEfectivo') {
+                    <div class="payment-logo pago-logo">P</div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="info-card">
+        <mat-card-content>
+          <div class="info-icon-wrapper">
+            <mat-icon class="info-icon">info</mat-icon>
+          </div>
+          <h4 class="info-title">Important Information</h4>
+          <ul class="info-list">
+            <li>Please arrive 15 minutes before your appointment</li>
+            <li>Bring your ID and insurance card</li>
+            <li>You can cancel up to 24 hours before</li>
+            <li>Late arrivals may result in rescheduling</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

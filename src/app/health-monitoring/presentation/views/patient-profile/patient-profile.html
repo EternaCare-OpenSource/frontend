@@ -1,0 +1,309 @@
+<div class="patient-profile-container">
+
+  <div class="profile-header">
+    <button mat-icon-button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <div class="header-content">
+      <div class="patient-summary">
+        <div class="patient-avatar-large">
+          {{ patient()?.fullName?.charAt(0) || 'P' }}
+        </div>
+        <div class="patient-basic-info">
+          <h1 class="patient-name">{{ patient()?.fullName || 'Patient' }}</h1>
+          <p class="patient-id">ID: {{ patient()?.patientId }}</p>
+          <div class="patient-meta">
+            <mat-chip class="meta-chip">
+              <mat-icon>cake</mat-icon>
+              {{ patient()?.age }} years
+            </mat-chip>
+            <mat-chip class="meta-chip">
+              <mat-icon>wc</mat-icon>
+              {{ patient()?.sex }}
+            </mat-chip>
+            <mat-chip class="meta-chip">
+              <mat-icon>bloodtype</mat-icon>
+              {{ patient()?.bloodType }}
+            </mat-chip>
+            <mat-chip
+              class="status-chip"
+              [style.background-color]="getStatusColor(patient()?.status || 'Healthy')">
+              <mat-icon>favorite</mat-icon>
+              {{ patient()?.status }}
+            </mat-chip>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="editProfile()">
+          <mat-icon>edit</mat-icon>
+          Edit Profile
+        </button>
+        <button mat-stroked-button routerLink="/health-monitoring/diagnosis/{{ patientId() }}">
+          <mat-icon>medical_services</mat-icon>
+          View Diagnosis
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <mat-tab-group animationDuration="300ms" class="profile-tabs">
+
+      <!-- Tab 1: Overview -->
+      <mat-tab label="Overview">
+        <div class="tab-content">
+          <div class="overview-grid">
+
+            <mat-card class="info-card">
+              <mat-card-header>
+                <mat-icon mat-card-avatar class="card-icon">person</mat-icon>
+                <mat-card-title>Personal Information</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label">Full Name:</span>
+                    <span class="info-value">{{ patient()?.fullName }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ patient()?.email }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Age:</span>
+                    <span class="info-value">{{ patient()?.age }} years</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Sex:</span>
+                    <span class="info-value">{{ patient()?.sex }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Blood Type:</span>
+                    <span class="info-value">{{ patient()?.bloodType }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Patient ID:</span>
+                    <span class="info-value">{{ patient()?.patientId }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-card-header>
+                <mat-icon mat-card-avatar class="card-icon medical">local_hospital</mat-icon>
+                <mat-card-title>Medical Information</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label">Health Insurance:</span>
+                    <span class="info-value">{{ patient()?.healthInsurance }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Preferred Hospital:</span>
+                    <span class="info-value">{{ patient()?.preferredHospital }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Register Date:</span>
+                    <span class="info-value">{{ patient()?.registerDate | date: 'mediumDate' }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Current Status:</span>
+                    <mat-chip [style.background-color]="getStatusColor(patient()?.status || '')">
+                      {{ patient()?.status }}
+                    </mat-chip>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-card-header>
+                <mat-icon mat-card-avatar class="card-icon doctor">medical_services</mat-icon>
+                <mat-card-title>Assigned Doctor</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                @if (assignedDoctor()) {
+                  <div class="doctor-info">
+                    <div class="doctor-avatar">
+                      {{ assignedDoctor()?.fullName ? assignedDoctor()?.fullName!.charAt(0) : 'D' }}
+                    </div>
+                    <div class="doctor-details">
+                      <h3 class="doctor-name">Dr. {{ assignedDoctor()?.fullName }}</h3>
+                      <p class="doctor-specialization">{{ assignedDoctor()?.specialization }}</p>
+                      <p class="doctor-contact">
+                        <mat-icon>email</mat-icon>
+                        {{ assignedDoctor()?.email }}
+                      </p>
+                      <p class="doctor-contact">
+                        <mat-icon>phone</mat-icon>
+                        {{ assignedDoctor()?.phoneNumber }}
+                      </p>
+                    </div>
+                  </div>
+                } @else {
+                  <p class="no-data">No doctor assigned</p>
+                }
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-card-header>
+                <mat-icon mat-card-avatar class="card-icon emergency">emergency</mat-icon>
+                <mat-card-title>Emergency Contact</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ emergencyContact().name }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Relationship:</span>
+                    <span class="info-value">{{ emergencyContact().relationship }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Phone:</span>
+                    <span class="info-value">{{ emergencyContact().phone }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ emergencyContact().email }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Medical History">
+        <div class="tab-content">
+          <mat-card class="history-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar class="card-icon">history</mat-icon>
+              <mat-card-title>Chronic Conditions</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (medicalHistory().length > 0) {
+                <div class="history-list">
+                  @for (condition of medicalHistory(); track condition.condition) {
+                    <div class="history-item">
+                      <div class="history-header">
+                        <h4 class="condition-name">{{ condition.condition }}</h4>
+                        <mat-chip [style.background-color]="getSeverityColor(condition.severity)">
+                          {{ condition.severity }}
+                        </mat-chip>
+                      </div>
+                      <div class="history-details">
+                        <div class="detail">
+                          <mat-icon>event</mat-icon>
+                          <span>Diagnosed: {{ condition.diagnosedDate | date: 'mediumDate' }}</span>
+                        </div>
+                        <div class="detail">
+                          <mat-icon>info</mat-icon>
+                          <span>Status: {{ condition.status }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                  }
+                </div>
+              } @else {
+                <p class="no-data">No medical history recorded</p>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Medications">
+        <div class="tab-content">
+          <mat-card class="medications-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar class="card-icon">medication</mat-icon>
+              <mat-card-title>Current Medications</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (medications().length > 0) {
+                <div class="medications-grid">
+                  @for (med of medications(); track med.name) {
+                    <div class="medication-card">
+                      <div class="med-header">
+                        <mat-icon class="med-icon">medication</mat-icon>
+                        <h4 class="med-name">{{ med.name }}</h4>
+                      </div>
+                      <div class="med-details">
+                        <div class="med-detail">
+                          <span class="label">Dosage:</span>
+                          <span class="value">{{ med.dosage }}</span>
+                        </div>
+                        <div class="med-detail">
+                          <span class="label">Frequency:</span>
+                          <span class="value">{{ med.frequency }}</span>
+                        </div>
+                        <div class="med-detail">
+                          <span class="label">Purpose:</span>
+                          <span class="value">{{ med.purpose }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="no-data">No medications prescribed</p>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Allergies">
+        <div class="tab-content">
+          <mat-card class="allergies-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar class="card-icon warning">warning</mat-icon>
+              <mat-card-title>Known Allergies</mat-card-title>
+              <mat-card-subtitle>Important: Always inform medical staff</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              @if (allergies().length > 0) {
+                <div class="allergies-list">
+                  @for (allergy of allergies(); track allergy.allergen) {
+                    <div class="allergy-item" [class.severe]="allergy.severity === 'Severe'">
+                      <div class="allergy-header">
+                        <mat-icon class="allergy-icon">warning</mat-icon>
+                        <div class="allergy-info">
+                          <h4 class="allergen-name">{{ allergy.allergen }}</h4>
+                          <span class="allergy-type">{{ allergy.type }}</span>
+                        </div>
+                        <mat-chip
+                          class="severity-chip"
+                          [style.background-color]="getSeverityColor(allergy.severity)">
+                          {{ allergy.severity }}
+                        </mat-chip>
+                      </div>
+                      <p class="allergy-reaction">
+                        <strong>Reaction:</strong> {{ allergy.reaction }}
+                      </p>
+                    </div>
+                    <mat-divider></mat-divider>
+                  }
+                </div>
+              } @else {
+                <p class="no-data">No known allergies</p>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+
+</div>

@@ -1,0 +1,124 @@
+<div class="reports-container">
+
+  <div class="header-section">
+    <button mat-icon-button routerLink="/health-monitoring/dashboard" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">Patient's reports</h1>
+  </div>
+
+  <mat-tab-group class="reports-tabs" animationDuration="300ms">
+
+    <mat-tab label="My Reports">
+      <div class="tab-content">
+        <div class="reports-grid">
+          @for (report of patientReports(); track report.id) {
+            <mat-card class="report-card">
+              <mat-card-content>
+                <div class="report-header">
+                  <div class="report-icon-wrapper" [style.background-color]="getReportColor(report.type)">
+                    <mat-icon class="report-icon">description</mat-icon>
+                  </div>
+                  <mat-chip class="report-type-chip">{{ report.type }}</mat-chip>
+                </div>
+
+                <div class="report-details">
+                  <h3 class="report-title">{{ report.title }}</h3>
+                  <p class="report-filename">{{ report.fileName }}</p>
+
+                  <div class="report-meta">
+                    <div class="meta-item">
+                      <mat-icon class="meta-icon">calendar_today</mat-icon>
+                      <span>{{ report.date }}</span>
+                    </div>
+                    <div class="meta-item">
+                      <mat-icon class="meta-icon">attach_file</mat-icon>
+                      <span>{{ report.size }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="report-actions">
+                  <button
+                    mat-stroked-button
+                    class="view-button"
+                    (click)="viewReport(report)">
+                    <mat-icon>visibility</mat-icon>
+                    View
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    class="download-button"
+                    (click)="downloadReport(report)">
+                    <mat-icon>download</mat-icon>
+                    Download
+                  </button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Medical Tests">
+      <div class="tab-content">
+
+        <div class="tests-header">
+          <div class="header-card">
+            <mat-icon class="header-icon">medical_services</mat-icon>
+            <h2>Patient Medical Reports</h2>
+          </div>
+          <button mat-raised-button color="primary" class="reports-button">
+            <mat-icon>description</mat-icon>
+            Patient's reports
+          </button>
+        </div>
+
+        <div class="frequency-section">
+          <div class="frequency-badge">
+            <mat-icon>calendar_today</mat-icon>
+            Weekly
+          </div>
+
+          <div class="tests-grid">
+            @for (test of weeklyTests(); track test.title) {
+              <mat-card class="test-card">
+                <div class="test-image-wrapper">
+                  <img [src]="test.image" [alt]="test.title" class="test-image">
+                </div>
+                <mat-card-content>
+                  <h3 class="test-title">{{ test.title }}</h3>
+                  <p class="test-description">{{ test.description }}</p>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </div>
+
+        <div class="frequency-section">
+          <div class="frequency-badge">
+            <mat-icon>event</mat-icon>
+            Monthly
+          </div>
+
+          <div class="tests-grid">
+            @for (test of monthlyTests(); track test.title) {
+              <mat-card class="test-card">
+                <div class="test-image-wrapper">
+                  <img [src]="test.image" [alt]="test.title" class="test-image">
+                </div>
+                <mat-card-content>
+                  <h3 class="test-title">{{ test.title }}</h3>
+                  <p class="test-description">{{ test.description }}</p>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

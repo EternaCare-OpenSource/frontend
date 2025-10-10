@@ -1,0 +1,416 @@
+<div class="profile-container">
+
+  <div class="profile-header">
+    <div class="header-content">
+      <div class="user-avatar-section">
+        <div class="user-avatar-large">
+          {{ getInitials() }}
+        </div>
+        <button mat-icon-button class="avatar-edit-btn" matTooltip="Change photo">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+      </div>
+
+      <div class="user-info">
+        <h1 class="user-name">{{ currentUser()?.fullName }}</h1>
+        <p class="user-email">{{ currentUser()?.email }}</p>
+        <mat-chip [style.background-color]="getRoleBadgeColor()" class="role-badge">
+          <mat-icon>badge</mat-icon>
+          {{ currentUser()?.role?.name }}
+        </mat-chip>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      @if (currentUser()?.role?.name === 'Doctor') {
+        <div class="stat-card">
+          <mat-icon class="stat-icon">people</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().patients }}</span>
+            <span class="stat-label">Patients</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">event</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().appointments }}</span>
+            <span class="stat-label">Appointments</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">schedule</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().schedules }}</span>
+            <span class="stat-label">Schedules</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">message</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().messages }}</span>
+            <span class="stat-label">Messages</span>
+          </div>
+        </div>
+      } @else if (currentUser()?.role?.name === 'Patient') {
+        <div class="stat-card">
+          <mat-icon class="stat-icon">event</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().appointments }}</span>
+            <span class="stat-label">Total Appointments</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">schedule</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().upcomingAppointments }}</span>
+            <span class="stat-label">Upcoming</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">mail</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().messages }}</span>
+            <span class="stat-label">Unread Messages</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">description</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().reports }}</span>
+            <span class="stat-label">Reports</span>
+          </div>
+        </div>
+      } @else {
+        <div class="stat-card">
+          <mat-icon class="stat-icon">people</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().users }}</span>
+            <span class="stat-label">Total Users</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">medical_services</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().doctors }}</span>
+            <span class="stat-label">Doctors</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">personal_injury</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().patients }}</span>
+            <span class="stat-label">Patients</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <mat-icon class="stat-icon">event</mat-icon>
+          <div class="stat-info">
+            <span class="stat-value">{{ userStats().appointments }}</span>
+            <span class="stat-label">Appointments</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="300ms" class="profile-tabs">
+
+    <mat-tab label="Personal Information">
+      <div class="tab-content">
+        <mat-card class="settings-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="card-icon">person</mat-icon>
+            <mat-card-title>Profile Details</mat-card-title>
+            <mat-card-subtitle>Update your personal information</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="profileForm" class="profile-form">
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="firstName">
+                  <mat-icon matPrefix>person</mat-icon>
+                  @if (profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched) {
+                    <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="lastName">
+                  <mat-icon matPrefix>person</mat-icon>
+                  @if (profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched) {
+                    <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <mat-form-field appearance="outline" class="form-field full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-icon matPrefix>email</mat-icon>
+                @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                  <mat-error>{{ getErrorMessage('email') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <div class="form-actions">
+                @if (isEditing()) {
+                  <button mat-stroked-button type="button" (click)="toggleEdit()">
+                    Cancel
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    type="button"
+                    (click)="saveProfile()"
+                    [disabled]="loading() || profileForm.invalid">
+                    @if (loading()) {
+                      <ng-container>
+                        <mat-icon>hourglass_empty</mat-icon>
+                        <span>Saving...</span>
+                      </ng-container>
+                    } @else {
+                      <ng-container>
+                        <mat-icon>save</mat-icon>
+                        <span>Save Changes</span>
+                      </ng-container>
+                    }
+                  </button>
+                } @else {
+                  <button mat-raised-button color="primary" type="button" (click)="toggleEdit()">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit Profile</span>
+                  </button>
+                }
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Security">
+      <div class="tab-content">
+        <mat-card class="settings-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="card-icon security">lock</mat-icon>
+            <mat-card-title>Change Password</mat-card-title>
+            <mat-card-subtitle>Keep your account secure</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="profileForm" class="password-form">
+              <mat-form-field appearance="outline" class="form-field full-width">
+                <mat-label>Current Password</mat-label>
+                <input matInput type="password" formControlName="currentPassword">
+                <mat-icon matPrefix>lock</mat-icon>
+              </mat-form-field>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>New Password</mat-label>
+                  <input matInput type="password" formControlName="newPassword">
+                  <mat-icon matPrefix>lock_open</mat-icon>
+                  @if (profileForm.get('newPassword')?.invalid && profileForm.get('newPassword')?.touched) {
+                    <mat-error>{{ getErrorMessage('newPassword') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput type="password" formControlName="confirmPassword">
+                  <mat-icon matPrefix>lock_open</mat-icon>
+                  @if (profileForm.get('confirmPassword')?.invalid && profileForm.get('confirmPassword')?.touched) {
+                    <mat-error>{{ getErrorMessage('confirmPassword') }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button mat-raised-button color="primary" type="button" (click)="changePassword()">
+                  <mat-icon>vpn_key</mat-icon>
+                  <span>Change Password</span>
+                </button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Notifications">
+      <div class="tab-content">
+        <mat-card class="settings-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="card-icon notifications">notifications</mat-icon>
+            <mat-card-title>Notification Preferences</mat-card-title>
+            <mat-card-subtitle>Manage how you receive updates</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="settings-list">
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Email Notifications</h4>
+                  <p>Receive notifications via email</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="notificationSettings().emailNotifications"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Appointment Reminders</h4>
+                  <p>Get reminders for upcoming appointments</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="notificationSettings().appointmentReminders"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Message Alerts</h4>
+                  <p>Notification for new messages</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="notificationSettings().messageAlerts"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Report Alerts</h4>
+                  <p>Get notified when reports are available</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="notificationSettings().reportAlerts"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Weekly Digest</h4>
+                  <p>Receive weekly summary emails</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="notificationSettings().weeklyDigest"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" (click)="saveNotificationSettings()">
+                <mat-icon>save</mat-icon>
+                <span>Save Preferences</span>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Privacy">
+      <div class="tab-content">
+        <mat-card class="settings-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="card-icon privacy">shield</mat-icon>
+            <mat-card-title>Privacy Settings</mat-card-title>
+            <mat-card-subtitle>Control your data and visibility</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="settings-list">
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Profile Visibility</h4>
+                  <p>Make your profile visible to other users</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="privacySettings().profileVisible"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Show Email</h4>
+                  <p>Display email on your profile</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="privacySettings().showEmail"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Show Phone</h4>
+                  <p>Display phone number on your profile</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="privacySettings().showPhone"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <h4>Data Sharing</h4>
+                  <p>Allow anonymous data sharing for research</p>
+                </div>
+                <mat-slide-toggle
+                  [(ngModel)]="privacySettings().dataSharing"
+                  color="primary">
+                </mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" (click)="savePrivacySettings()">
+                <mat-icon>save</mat-icon>
+                <span>Save Settings</span>
+              </button>
+            </div>
+
+            <mat-divider class="danger-divider"></mat-divider>
+
+            <div class="danger-zone">
+              <h3 class="danger-title">
+                <mat-icon>warning</mat-icon>
+                Danger Zone
+              </h3>
+              <p class="danger-description">
+                Once you delete your account, there is no going back. Please be certain.
+              </p>
+              <button mat-stroked-button color="warn" (click)="deleteAccount()">
+                <mat-icon>delete_forever</mat-icon>
+                <span>Delete Account</span>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

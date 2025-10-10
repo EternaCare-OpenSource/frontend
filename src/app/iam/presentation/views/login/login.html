@@ -1,0 +1,99 @@
+<div class="login-container">
+  <div class="login-card-wrapper">
+    <mat-card class="login-card">
+      <mat-card-content>
+        <div class="login-header">
+          <div class="logo-container">
+            <img
+              src="https://i.postimg.cc/mrxQYxT5/6bf22840-18a1-43a0-a895-087523b4a860-removebg-preview.png"
+              alt="CareLink Logo"
+              class="logo-image">
+          </div>
+          <h1 class="sign-in-title">Sign In</h1>
+          <p class="subtitle">Welcome back! Please login to your account.</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              autocomplete="email">
+            <mat-icon matPrefix>email</mat-icon>
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <mat-error>{{ getErrorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password">
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePassword()">
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <mat-error>{{ getErrorMessage('password') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="forgot-password">
+            <a routerLink="/iam/forgot-password" class="link">Forgot password?</a>
+          </div>
+
+          <button
+            mat-raised-button
+            type="submit"
+            class="login-button"
+            [disabled]="loading()">
+            @if (loading()) {
+              <ng-container>
+                <mat-icon>hourglass_empty</mat-icon>
+                <span>Signing in...</span>
+              </ng-container>
+            } @else {
+              <ng-container>
+                <mat-icon>login</mat-icon>
+                <span>Sign In</span>
+              </ng-container>
+            }
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <div class="social-login">
+          <button mat-stroked-button class="social-button" type="button">
+            <img src="https://www.google.com/favicon.ico" alt="Google" class="social-icon">
+            <span>Continue with Google</span>
+          </button>
+          <button mat-stroked-button class="social-button" type="button">
+            <img src="https://www.facebook.com/favicon.ico" alt="Facebook" class="social-icon">
+            <span>Continue with Facebook</span>
+          </button>
+        </div>
+
+        <div class="register-link">
+          <span>Don't have an account? </span>
+          <a routerLink="/iam/register" class="link">Sign up</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

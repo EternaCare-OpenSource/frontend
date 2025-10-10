@@ -1,0 +1,161 @@
+<div class="appointments-container">
+
+  <div class="header-section">
+    <div class="title-section">
+      <h1 class="page-title">Appointments Calendar</h1>
+      <p class="page-subtitle">Manage and schedule your medical appointments</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="createAppointment()" class="create-button">
+      <mat-icon>add</mat-icon>
+      New Appointment
+    </button>
+  </div>
+
+  <div class="calendar-layout">
+
+    <mat-card class="calendar-card">
+
+      <div class="calendar-header">
+        <button mat-icon-button (click)="previousMonth()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="calendar-title">
+          <h2>{{ monthName() }} {{ currentYear() }}</h2>
+        </div>
+
+        <button mat-icon-button (click)="nextMonth()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <button mat-stroked-button (click)="goToToday()" class="today-button">
+          Today
+        </button>
+      </div>
+
+      <div class="calendar-grid">
+
+        <div class="weekday-header">Sun</div>
+        <div class="weekday-header">Mon</div>
+        <div class="weekday-header">Tue</div>
+        <div class="weekday-header">Wed</div>
+        <div class="weekday-header">Thu</div>
+        <div class="weekday-header">Fri</div>
+        <div class="weekday-header">Sat</div>
+
+        @for (day of calendarDays(); track day.date.getTime()) {
+          <div
+            class="calendar-day"
+            [class.other-month]="!day.isCurrentMonth"
+            [class.today]="day.isToday"
+            [class.has-appointments]="day.appointments.length > 0">
+
+            <div class="day-number">{{ day.dayNumber }}</div>
+
+            @if (day.appointments.length > 0) {
+              <div class="appointments-indicator">
+                @for (apt of day.appointments; track apt.id) {
+                  <div
+                    class="appointment-dot"
+                    [matTooltip]="apt.patientName + ' - ' + apt.appointmentTime"
+                    [class.scheduled]="apt.status === 'Scheduled'"
+                    [class.completed]="apt.status === 'Completed'"
+                    [class.cancelled]="apt.status === 'Cancelled'">
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </mat-card>
+
+    <div class="sidebar">
+      <mat-card class="upcoming-card">
+        <mat-card-header>
+          <mat-card-title>Upcoming Appointments</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (upcomingAppointments().length === 0) {
+            <div class="no-appointments">
+              <mat-icon class="no-apt-icon">event_available</mat-icon>
+              <p>No upcoming appointments</p>
+            </div>
+          } @else {
+            <div class="appointments-list">
+              @for (apt of upcomingAppointments(); track apt.id) {
+                <div class="appointment-item">
+                  <div class="appointment-date">
+                    <div class="date-day">{{ apt.appointmentDate | date: 'dd' }}</div>
+                    <div class="date-month">{{ apt.appointmentDate | date: 'MMM' }}</div>
+                  </div>
+
+                  <div class="appointment-details">
+                    <div class="appointment-patient">{{ apt.patientName }}</div>
+                    <div class="appointment-time">
+                      <mat-icon class="time-icon">schedule</mat-icon>
+                      {{ apt.appointmentTime }}
+                    </div>
+                    <div class="appointment-doctor">
+                      <mat-icon class="doctor-icon">medical_services</mat-icon>
+                      {{ apt.doctorName }}
+                    </div>
+                  </div>
+
+                  <div class="appointment-actions">
+                    <mat-chip [color]="getStatusColor(apt.status)" selected class="status-chip">
+                      {{ apt.status }}
+                    </mat-chip>
+
+                    <button
+                      mat-icon-button
+                      [matMenuTriggerFor]="menu"
+                      class="action-button">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="viewAppointment(apt)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View Details</span>
+                      </button>
+                      <button mat-menu-item (click)="viewAppointment(apt)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <mat-divider></mat-divider>
+                      <button mat-menu-item (click)="deleteAppointment(apt)" class="delete-option">
+                        <mat-icon>delete</mat-icon>
+                        <span>Cancel</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stats-card">
+        <mat-card-content>
+          <div class="stat-item">
+            <mat-icon class="stat-icon">event</mat-icon>
+            <div class="stat-info">
+              <div class="stat-value">{{ appointments().length }}</div>
+              <div class="stat-label">Total Appointments</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <mat-icon class="stat-icon scheduled">schedule</mat-icon>
+            <div class="stat-info">
+              <div class="stat-value">{{ upcomingAppointments().length }}</div>
+              <div class="stat-label">Upcoming</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

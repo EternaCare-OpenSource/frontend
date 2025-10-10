@@ -1,0 +1,338 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "juan.gonzales@carelink.com",
+      "password": "patient123",
+      "firstName": "Juan",
+      "lastName": "Gonzales",
+      "roleId": 1,
+      "isActive": true,
+      "createdAt": "2024-01-15T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "email": "doctor.watson@carelink.com",
+      "password": "doctor123",
+      "firstName": "John",
+      "lastName": "Watson",
+      "roleId": 2,
+      "isActive": true,
+      "createdAt": "2024-01-10T08:00:00Z"
+    },
+    {
+      "id": 3,
+      "email": "maria.thompson@carelink.com",
+      "password": "family123",
+      "firstName": "Maria",
+      "lastName": "Thompson",
+      "roleId": 3,
+      "isActive": true,
+      "createdAt": "2024-01-20T08:00:00Z"
+    },
+    {
+      "id": 4,
+      "email": "admin@carelink.com",
+      "password": "admin123",
+      "firstName": "Admin",
+      "lastName": "System",
+      "roleId": 4,
+      "isActive": true,
+      "createdAt": "2024-01-01T08:00:00Z"
+    },
+    {
+      "id": 5,
+      "email": "doctor.smith@carelink.com",
+      "password": "doctor123",
+      "firstName": "Sarah",
+      "lastName": "Smith",
+      "roleId": 2,
+      "isActive": true,
+      "createdAt": "2024-01-12T08:00:00Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "Patient",
+      "description": "Elderly patient receiving care",
+      "permissions": [
+        "view_own_profile",
+        "view_own_appointments",
+        "view_own_reports"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Doctor",
+      "description": "Medical professional providing care",
+      "permissions": [
+        "view_all_patients",
+        "create_prescription",
+        "view_medical_records",
+        "manage_appointments"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Family",
+      "description": "Family member monitoring patient care",
+      "permissions": [
+        "view_patient_profile",
+        "view_appointments",
+        "receive_alerts"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Admin",
+      "description": "System administrator",
+      "permissions": [
+        "*"
+      ]
+    }
+  ],
+  "patients": [
+    {
+      "id": 1,
+      "firstName": "Juan",
+      "lastName": "Gonzales",
+      "email": "juan.gonzales@carelink.com",
+      "age": 77,
+      "sex": "Male",
+      "bloodType": "A+",
+      "patientId": "#829130224",
+      "healthInsurance": "EsSalud",
+      "preferredHospital": "Hospital Nacional",
+      "status": "Healthy",
+      "assignedDoctorId": 2,
+      "registerDate": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "firstName": "Carlos",
+      "lastName": "Mendoza",
+      "email": "carlos.mendoza@carelink.com",
+      "age": 82,
+      "sex": "Male",
+      "bloodType": "O+",
+      "patientId": "#829130225",
+      "healthInsurance": "Pacifico",
+      "preferredHospital": "Clínica San Felipe",
+      "status": "Under Observation",
+      "assignedDoctorId": 5,
+      "registerDate": "2024-02-20"
+    }
+  ],
+  "doctors": [
+    {
+      "id": 2,
+      "firstName": "John",
+      "lastName": "Watson",
+      "email": "doctor.watson@carelink.com",
+      "specialization": "Geriatrics",
+      "cmpCode": "CMP-12345",
+      "studyCentre": "Universidad Nacional Mayor de San Marcos",
+      "phoneNumber": "+51 987 123 456"
+    },
+    {
+      "id": 5,
+      "firstName": "Sarah",
+      "lastName": "Smith",
+      "email": "doctor.smith@carelink.com",
+      "specialization": "Cardiology",
+      "cmpCode": "CMP-12346",
+      "studyCentre": "Universidad Peruana Cayetano Heredia",
+      "phoneNumber": "+51 987 123 457"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "patientName": "Juan Gonzales",
+      "doctorId": 2,
+      "doctorName": "Dr. John Watson",
+      "appointmentDate": "2025-10-15",
+      "appointmentTime": "10:00",
+      "reason": "Monthly routine checkup",
+      "status": "Scheduled",
+      "notes": "Patient requested morning appointment",
+      "createdAt": "2025-10-01T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "patientId": 1,
+      "patientName": "Juan Gonzales",
+      "doctorId": 2,
+      "doctorName": "Dr. John Watson",
+      "appointmentDate": "2025-10-20",
+      "appointmentTime": "14:30",
+      "reason": "Follow-up on blood pressure medication",
+      "status": "Scheduled",
+      "notes": "Review recent lab results",
+      "createdAt": "2025-10-02T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "patientId": 2,
+      "patientName": "Carlos Mendoza",
+      "doctorId": 5,
+      "doctorName": "Dr. Sarah Smith",
+      "appointmentDate": "2025-10-18",
+      "appointmentTime": "09:00",
+      "reason": "Heart health evaluation",
+      "status": "Scheduled",
+      "notes": "ECG scheduled",
+      "createdAt": "2025-10-05T14:00:00Z"
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "doctorId": 2,
+      "dayOfWeek": "Monday",
+      "startTime": "08:00",
+      "endTime": "17:00",
+      "isAvailable": true
+    },
+    {
+      "id": 2,
+      "doctorId": 2,
+      "dayOfWeek": "Wednesday",
+      "startTime": "08:00",
+      "endTime": "17:00",
+      "isAvailable": true
+    },
+    {
+      "id": 3,
+      "doctorId": 2,
+      "dayOfWeek": "Friday",
+      "startTime": "08:00",
+      "endTime": "14:00",
+      "isAvailable": true
+    },
+    {
+      "id": 4,
+      "doctorId": 5,
+      "dayOfWeek": "Tuesday",
+      "startTime": "09:00",
+      "endTime": "18:00",
+      "isAvailable": true
+    },
+    {
+      "id": 5,
+      "doctorId": 5,
+      "dayOfWeek": "Thursday",
+      "startTime": "09:00",
+      "endTime": "18:00",
+      "isAvailable": true
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "senderId": 2,
+      "senderName": "Dr. John Watson",
+      "receiverId": 1,
+      "receiverName": "Juan Gonzales",
+      "subject": "Appointment Reminder",
+      "content": "Your appointment is tomorrow at 10:00 AM. Please arrive 15 minutes early.",
+      "sentAt": "2025-10-08T15:30:00Z",
+      "isRead": false,
+      "conversationId": 1
+    },
+    {
+      "id": 2,
+      "senderId": 1,
+      "senderName": "Juan Gonzales",
+      "receiverId": 2,
+      "receiverName": "Dr. John Watson",
+      "subject": "Re: Appointment Reminder",
+      "content": "Thank you doctor, I'll be there on time.",
+      "sentAt": "2025-10-08T16:00:00Z",
+      "isRead": true,
+      "conversationId": 1
+    },
+    {
+      "id": 3,
+      "senderId": 2,
+      "senderName": "Dr. John Watson",
+      "receiverId": 1,
+      "receiverName": "Juan Gonzales",
+      "subject": "Test Results",
+      "content": "Your recent blood test results look good. We'll discuss them in detail tomorrow.",
+      "sentAt": "2025-10-08T17:15:00Z",
+      "isRead": false,
+      "conversationId": 1
+    },
+    {
+      "id": 4,
+      "senderId": 3,
+      "senderName": "Maria Thompson",
+      "receiverId": 1,
+      "receiverName": "Juan Gonzales",
+      "subject": "Medication Reminder",
+      "content": "Don't forget to take your evening medication at 8 PM.",
+      "sentAt": "2025-10-09T19:45:00Z",
+      "isRead": true,
+      "conversationId": 2
+    },
+    {
+      "id": 1760112287309,
+      "senderId": 1,
+      "senderName": "Juan Gonzales",
+      "receiverId": 0,
+      "receiverName": "",
+      "subject": "",
+      "content": "Ty",
+      "sentAt": "2025-10-10T16:04:47.309Z",
+      "isRead": false,
+      "conversationId": 1
+    },
+    {
+      "id": 1760112301645,
+      "senderId": 2,
+      "senderName": "John Watson",
+      "receiverId": 0,
+      "receiverName": "",
+      "subject": "",
+      "content": "No te preocupes bb",
+      "sentAt": "2025-10-10T16:05:01.645Z",
+      "isRead": false,
+      "conversationId": 1
+    }
+  ],
+  "conversations": [
+    {
+      "id": 1,
+      "participantIds": [
+        1,
+        2
+      ],
+      "participantNames": [
+        "Juan Gonzales",
+        "Dr. John Watson"
+      ],
+      "lastMessageContent": "Your recent blood test results look good. We'll discuss them in detail tomorrow.",
+      "lastMessageTime": "2025-10-08T17:15:00Z",
+      "unreadCount": 2,
+      "createdAt": "2025-10-01T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "participantIds": [
+        1,
+        3
+      ],
+      "participantNames": [
+        "Juan Gonzales",
+        "Maria Thompson"
+      ],
+      "lastMessageContent": "Don't forget to take your evening medication at 8 PM.",
+      "lastMessageTime": "2025-10-09T19:45:00Z",
+      "unreadCount": 0,
+      "createdAt": "2025-10-01T08:00:00Z"
+    }
+  ]
+}

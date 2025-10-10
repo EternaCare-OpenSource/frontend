@@ -1,0 +1,134 @@
+<div class="doctors-list-container">
+
+  <div class="header-section">
+    <div class="title-section">
+      <h1 class="page-title">Doctors Management</h1>
+      <p class="page-subtitle">View and manage medical staff</p>
+    </div>
+
+    <div class="actions-section">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search doctors</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search by name, specialization, or CMP">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="add-button">
+        <mat-icon>add</mat-icon>
+        Add New Doctor
+      </button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+      <p>Loading doctors...</p>
+    </div>
+  } @else if (filteredDoctors().length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">medical_services</mat-icon>
+      <h3>No doctors found</h3>
+      <p>Try adjusting your search criteria</p>
+    </div>
+  } @else {
+    <div class="doctors-grid">
+      @for (doctor of filteredDoctors(); track doctor.id) {
+        <mat-card class="doctor-card">
+          <mat-card-content>
+            <div class="card-header">
+              <mat-chip
+                class="specialization-chip"
+                [style.background-color]="getSpecializationColor(doctor.specialization)"
+                [style.color]="'white'">
+                {{ doctor.specialization }}
+              </mat-chip>
+
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                class="menu-button">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="viewDoctorDetails(doctor)">
+                  <mat-icon>visibility</mat-icon>
+                  <span>View Profile</span>
+                </button>
+                <button mat-menu-item (click)="editDoctor(doctor)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="deleteDoctor(doctor)" class="delete-option">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </div>
+
+            <div class="doctor-avatar">
+              {{ getAvatarInitials(doctor.fullName) }}
+            </div>
+
+            <h3 class="doctor-name">Dr. {{ doctor.fullName }}</h3>
+            <p class="doctor-email">{{ doctor.email }}</p>
+
+            <div class="doctor-details">
+              <div class="detail-item">
+                <mat-icon class="detail-icon">badge</mat-icon>
+                <div class="detail-content">
+                  <span class="detail-label">CMP Code</span>
+                  <span class="detail-value">{{ doctor.cmpCode }}</span>
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <mat-icon class="detail-icon">school</mat-icon>
+                <div class="detail-content">
+                  <span class="detail-label">Study Centre</span>
+                  <span class="detail-value">{{ doctor.studyCentre }}</span>
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <mat-icon class="detail-icon">phone</mat-icon>
+                <div class="detail-content">
+                  <span class="detail-label">Phone</span>
+                  <span class="detail-value">{{ doctor.phoneNumber }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button
+                mat-stroked-button
+                class="action-button"
+                (click)="viewDoctorDetails(doctor)">
+                View Profile
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                class="action-button">
+                <mat-icon>message</mat-icon>
+                Contact
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <div class="list-footer">
+      <p class="results-count">
+        Showing <strong>{{ filteredDoctors().length }}</strong> of <strong>{{ doctors().length }}</strong> doctors
+      </p>
+    </div>
+  }
+</div>

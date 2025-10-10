@@ -1,0 +1,279 @@
+.doctors-list-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.header-section {
+  margin-bottom: 24px;
+}
+
+.title-section {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.actions-section {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.search-field {
+  flex: 1;
+  max-width: 400px;
+}
+
+.add-button {
+  height: 48px;
+  font-weight: 600;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.doctor-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.doctor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.specialization-chip {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.menu-button {
+  color: #666;
+}
+
+.delete-option {
+  color: #f44336;
+}
+
+.delete-option mat-icon {
+  color: #f44336;
+}
+
+.doctor-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5eb9d7 0%, #4a9bb8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+  margin: 0 auto 16px;
+  border: 4px solid #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+.doctor-email {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.doctor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-icon {
+  color: #5eb9d7;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.detail-label {
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  flex: 1;
+  height: 40px;
+}
+
+.list-footer {
+  padding: 16px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.results-count {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.results-count strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.loading-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #5eb9d7;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-size: 16px;
+  color: #666;
+  margin-top: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .doctors-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .actions-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    max-width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .doctor-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+}

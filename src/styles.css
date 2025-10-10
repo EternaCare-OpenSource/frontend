@@ -1,0 +1,274 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.container-with-spacing {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-spacer {
+  flex: 1 1 auto;
+}
+
+mat-card {
+  transition: all 0.3s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.mat-mdc-raised-button {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  color: #666;
+}
+
+.loading-icon,
+.empty-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #5eb9d7;
+  margin-bottom: 16px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5eb9d7;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a9bb8;
+}
+
+h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 700;
+  color: #1e3a5f;
+  margin: 0 0 16px 0;
+}
+
+h2 {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 600;
+  color: #2c5282;
+  margin: 0 0 12px 0;
+}
+
+h3 {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+p {
+  line-height: 1.6;
+  color: #666;
+}
+
+a {
+  color: #5eb9d7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #4a9bb8;
+  text-decoration: underline;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #f44336;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-dot.online {
+  background-color: #4caf50;
+}
+
+.status-dot.offline {
+  background-color: #9e9e9e;
+}
+
+.status-dot.busy {
+  background-color: #ff9800;
+}
+
+.elevation-1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.elevation-2 {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.elevation-3 {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 960px) {
+  .container-with-spacing {
+    padding: 16px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container-with-spacing {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: white;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+*:focus-visible {
+  outline: 2px solid #5eb9d7;
+  outline-offset: 2px;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mat-mdc-card {
+  border-radius: 12px !important;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 8px !important;
+}
+
+.mat-mdc-outlined-button {
+  border-radius: 8px !important;
+}
+
+a.active {
+  color: #5eb9d7;
+  font-weight: 600;
+  border-bottom: 3px solid #5eb9d7;
+}

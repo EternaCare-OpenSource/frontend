@@ -1,0 +1,141 @@
+<div class="diagnosis-container">
+  @if (patient(); as patient) {
+
+    <div class="header-section">
+      <button mat-icon-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title">Diagnosis</h1>
+    </div>
+
+    <div class="diagnosis-content">
+
+      <div class="left-column">
+        <mat-card class="model-card">
+          <mat-card-content>
+            <div class="model-viewer">
+              <div class="model-placeholder">
+                <div class="body-diagram">
+                  <mat-icon class="body-icon">accessibility</mat-icon>
+                  <p class="model-label">Patient Body Model</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="right-column">
+
+        <div class="vital-signs-section">
+          @for (sign of vitalSigns(); track sign.label) {
+            <mat-card class="vital-card">
+              <mat-card-content class="vital-content">
+                <div class="vital-header">
+                  <mat-icon
+                    class="vital-icon"
+                    [style.color]="getStatusColor(sign.status)">
+                    {{ sign.icon }}
+                  </mat-icon>
+                  <div
+                    class="status-indicator"
+                    [style.background-color]="getStatusColor(sign.status)">
+                  </div>
+                </div>
+                <div class="vital-data">
+                  <div class="vital-value">{{ sign.value }}</div>
+                  <div class="vital-label">{{ sign.label }}</div>
+                  @if (sign.unit) {
+                    <div class="vital-unit">{{ sign.unit }}</div>
+                  }
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+
+        <div class="info-grid">
+
+          <mat-card class="activities-card">
+            <mat-card-header>
+              <mat-card-title>Activities List</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @for (activity of activities(); track activity.title) {
+                <div class="activity-item">
+                  <div class="activity-icon-wrapper">
+                    <mat-icon>{{ activity.icon }}</mat-icon>
+                  </div>
+                  <div class="activity-details">
+                    <div class="activity-title">{{ activity.title }}</div>
+                    <div class="activity-subtitle">{{ activity.subtitle }}</div>
+                  </div>
+                </div>
+              }
+
+              <div class="activity-footer">
+                <div class="footer-label">Category</div>
+                <div class="footer-datetime">
+                  <div class="datetime-item">
+                    <span class="datetime-label">Date</span>
+                    <span class="datetime-value">24-05-2003</span>
+                  </div>
+                  <div class="datetime-item">
+                    <span class="datetime-label">Time</span>
+                    <span class="datetime-value">10:00 AM</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="medication-card">
+            <mat-card-header>
+              <mat-card-title>Medication List</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="medication-header">
+                <span class="med-col">Taken</span>
+                <span class="med-col">Medication</span>
+                <span class="med-col">Time</span>
+              </div>
+
+              @for (med of medications(); track med.name + med.date) {
+                <div class="medication-item">
+                  <div class="med-col">
+                    <mat-icon [class.taken]="med.taken">
+                      {{ med.taken ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                  </div>
+                  <div class="med-col med-name">{{ med.name }}</div>
+                  <div class="med-col med-date">
+                    <mat-icon class="calendar-icon">calendar_today</mat-icon>
+                    {{ med.date }}
+                  </div>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <mat-card class="recommendations-card">
+          <mat-card-header>
+            <mat-card-title>Recommendations</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="recommendations-text">{{ recommendations() }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  } @else {
+    <div class="no-patient">
+      <mat-icon class="no-patient-icon">error_outline</mat-icon>
+      <h2>Patient Not Found</h2>
+      <p>The requested patient information could not be loaded.</p>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        Go Back
+      </button>
+    </div>
+  }
+</div>

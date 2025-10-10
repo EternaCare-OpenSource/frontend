@@ -1,0 +1,212 @@
+{
+  "home": {
+    "title": "Welcome to CareLink",
+    "content": "Your comprehensive platform for elderly care management. Monitor health, manage appointments, and stay connected with your care team.",
+    "features": {
+      "monitoring": {
+        "title": "Health Monitoring",
+        "description": "Real-time vital signs tracking and comprehensive medical records"
+      },
+      "appointments": {
+        "title": "Appointments",
+        "description": "Schedule and manage medical appointments with automated reminders"
+      },
+      "messaging": {
+        "title": "Secure Messaging",
+        "description": "Direct communication between patients, doctors, and family members"
+      },
+      "access": {
+        "title": "Access Control",
+        "description": "Role-based permissions ensuring data privacy and security"
+      }
+    }
+  },
+  "page-not-found": {
+    "title": "Page Not Found",
+    "content": "The page you are looking for at <strong>{{invalid_path}}</strong> does not exist.",
+    "go-home": "Go to Home"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "doctors": "Doctors",
+    "appointments": "Appointments",
+    "messages": "Messages",
+    "reports": "Reports",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Please login to your account.",
+      "email": "Email",
+      "password": "Password",
+      "forgot-password": "Forgot password?",
+      "submit": "Sign In",
+      "no-account": "Don't have an account?",
+      "sign-up": "Sign up",
+      "or": "OR",
+      "google": "Continue with Google",
+      "facebook": "Continue with Facebook"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join CareLink to start your healthcare journey",
+      "first-name": "First Name",
+      "last-name": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "confirm-password": "Confirm Password",
+      "role": "I am a",
+      "terms": "I agree to the Terms and Conditions and Privacy Policy",
+      "submit": "Create Account",
+      "have-account": "Already have an account?",
+      "sign-in": "Sign in"
+    }
+  },
+  "dashboard": {
+    "title": "Patient Dashboard",
+    "vital-signs": {
+      "title": "Vital Signs",
+      "subtitle": "Latest readings",
+      "heart-rate": "Heart Rate",
+      "blood-pressure": "Blood Pressure",
+      "glucose": "Glucose",
+      "water": "Water Intake",
+      "temperature": "Temperature",
+      "oxygen": "Oxygen Saturation"
+    },
+    "medications": {
+      "title": "Medications",
+      "subtitle": "Today's schedule",
+      "taken": "Taken",
+      "pending": "Pending"
+    },
+    "activities": {
+      "title": "Recent Activities",
+      "view-all": "View All"
+    },
+    "recommendations": {
+      "title": "Medical Recommendations",
+      "subtitle": "From your care team"
+    }
+  },
+  "patients": {
+    "title": "Patients Management",
+    "subtitle": "View and manage all registered patients",
+    "search": "Search patients",
+    "add": "Add New Patient",
+    "columns": {
+      "name": "Patient Name",
+      "id": "Patient ID",
+      "age": "Age",
+      "sex": "Sex",
+      "blood-type": "Blood Type",
+      "doctor": "Assigned Doctor",
+      "status": "Status",
+      "register-date": "Register Date",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "View Details",
+      "diagnosis": "View Diagnosis",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "status": {
+      "healthy": "Healthy",
+      "critical": "Critical",
+      "warning": "Warning",
+      "stable": "Stable"
+    }
+  },
+  "doctors": {
+    "title": "Doctors Management",
+    "subtitle": "View and manage medical staff",
+    "search": "Search doctors",
+    "add": "Add New Doctor",
+    "specialization": "Specialization",
+    "cmp-code": "CMP Code",
+    "study-centre": "Study Centre",
+    "phone": "Phone",
+    "actions": {
+      "view": "View Profile",
+      "contact": "Contact",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "appointments": {
+    "title": "Appointments",
+    "subtitle": "Manage your appointments",
+    "new": "New Appointment",
+    "upcoming": "Upcoming Appointments",
+    "past": "Past Appointments",
+    "calendar": "Calendar View",
+    "list": "List View",
+    "form": {
+      "title-new": "Book Appointment",
+      "title-edit": "Edit Appointment",
+      "patient": "Patient",
+      "doctor": "Doctor",
+      "date": "Date",
+      "time": "Time",
+      "reason": "Reason for Visit",
+      "notes": "Additional Notes",
+      "submit": "Book Appointment",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no-show": "No-Show"
+    }
+  },
+  "messaging": {
+    "title": "Messages",
+    "subtitle": "Secure communication with your care team",
+    "conversations": "Conversations",
+    "new-message": "New Message",
+    "search": "Search messages",
+    "type-message": "Type a message...",
+    "send": "Send",
+    "unread": "unread"
+  },
+  "reports": {
+    "title": "Medical Reports",
+    "subtitle": "View your medical test results and reports",
+    "my-reports": "My Reports",
+    "medical-tests": "Medical Tests Information",
+    "download": "Download",
+    "view": "View Report",
+    "weekly": "Weekly Tests",
+    "monthly": "Monthly Tests",
+    "quarterly": "Quarterly Tests"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

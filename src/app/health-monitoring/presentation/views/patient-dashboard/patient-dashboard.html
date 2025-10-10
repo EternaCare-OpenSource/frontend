@@ -1,0 +1,234 @@
+<div class="patient-dashboard">
+  @if (currentPatient(); as patient) {
+    <div class="dashboard-content">
+
+      <div class="left-column">
+        <mat-card class="profile-card">
+          <mat-card-content>
+            <div class="patient-avatar">
+              <img [src]="getAvatarUrl()" alt="Patient Avatar" class="avatar-image">
+            </div>
+
+            <div class="patient-info">
+              <h2 class="patient-name">Mr. {{ patient.fullName }}</h2>
+              <p class="patient-email">{{ patient.email }}</p>
+            </div>
+
+            <div class="medical-info-grid">
+              <div class="info-item">
+                <span class="info-label">Sex:</span>
+                <div class="info-value-box">{{ patient.sex }}</div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Age:</span>
+                <div class="info-value-box">{{ patient.age }}</div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Blood:</span>
+                <div class="info-value-box">{{ patient.bloodType }}</div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Status:</span>
+                <div class="info-value-box" [style.background-color]="getStatusColor(patient.status)">
+                  {{ patient.status }}
+                </div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Assigned to:</span>
+                <div class="info-value-box">{{ assignedDoctor()?.fullName || 'Not assigned' }}</div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Register Date:</span>
+                <div class="info-value-box">{{ patient.registerDate | date: 'dd/MM/yy' }}</div>
+              </div>
+            </div>
+
+            <div class="patient-id-section">
+              <span class="patient-id-label">Patient ID:</span>
+              <div class="patient-id-value">{{ patient.patientId }}</div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="medical-documents">
+              <h3 class="section-title">Patient Medical Information:</h3>
+
+              <button
+                mat-stroked-button
+                class="download-button"
+                (click)="downloadReport('Health Resume April')">
+                <span>Health Resume April</span>
+                <mat-icon class="download-icon">download</mat-icon>
+              </button>
+
+              <button
+                mat-stroked-button
+                class="download-button"
+                (click)="downloadReport('Health Resume 2024')">
+                <span>Health Resume 2024</span>
+                <mat-icon class="download-icon">download</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="right-column">
+
+        <div class="vital-signs-grid">
+
+          <mat-card class="vital-card">
+            <mat-card-content class="vital-content">
+              <mat-icon class="vital-icon heart-icon">favorite</mat-icon>
+              <div class="vital-info">
+                <div class="vital-value">{{ vitalSigns().heartRate }} BPM</div>
+                <div class="vital-label">Heart Rate</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="vital-card">
+            <mat-card-content class="vital-content">
+              <mat-icon class="vital-icon pressure-icon">bloodtype</mat-icon>
+              <div class="vital-info">
+                <div class="vital-value">{{ vitalSigns().bloodPressure }}</div>
+                <div class="vital-label">Blood Pressure</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="vital-card">
+            <mat-card-content class="vital-content">
+              <mat-icon class="vital-icon glucose-icon">opacity</mat-icon>
+              <div class="vital-info">
+                <div class="vital-value">{{ vitalSigns().glucose }}</div>
+                <div class="vital-label">Glucose</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="vital-card">
+            <mat-card-content class="vital-content">
+              <mat-icon class="vital-icon water-icon">water_drop</mat-icon>
+              <div class="vital-info">
+                <div class="vital-value">{{ vitalSigns().water }} Liters</div>
+                <div class="vital-label">Water</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="activities-emotions-grid">
+
+          <mat-card class="activities-card">
+            <mat-card-header>
+              <mat-card-title>Activities List</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @for (activity of recentActivities(); track activity.title) {
+                <div class="activity-item">
+                  <div class="activity-icon-wrapper" [style.background-color]="activity.color">
+                    <mat-icon>{{ activity.icon }}</mat-icon>
+                  </div>
+                  <div class="activity-details">
+                    <div class="activity-title">{{ activity.title }}</div>
+                    <div class="activity-subtitle">{{ activity.subtitle }}</div>
+                  </div>
+                </div>
+              }
+
+              <div class="activity-footer">
+                <span class="activity-label">Category</span>
+                <div class="activity-datetime">
+                  <span class="activity-date">Date<br>24-05-2003</span>
+                  <span class="activity-time">Time<br>10:00 AM</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="emotions-card">
+            <mat-card-header>
+              <mat-card-title>Amount(%)</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="emotions-chart">
+                @for (emotion of emotionsData(); track emotion.label) {
+                  <div class="emotion-bar">
+                    <div
+                      class="bar-fill"
+                      [style.height.%]="emotion.value"
+                      [matTooltip]="emotion.emotion + ': ' + emotion.value + '%'">
+                    </div>
+                    <span class="bar-label">{{ emotion.label }}</span>
+                  </div>
+                }
+              </div>
+              <div class="emotions-legend">
+                <div class="legend-item"><strong>H</strong> Happiness</div>
+                <div class="legend-item"><strong>S</strong> Sadness</div>
+                <div class="legend-item"><strong>A</strong> Anger</div>
+                <div class="legend-item"><strong>J</strong> Joy</div>
+                <div class="legend-item"><strong>F</strong> Fear</div>
+                <div class="legend-item"><strong>D</strong> Depression</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <mat-card class="medication-card">
+          <mat-card-header>
+            <mat-card-title>Medication List</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <table class="medication-table">
+              <thead>
+              <tr>
+                <th>Taken</th>
+                <th>Medication</th>
+                <th>Time</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (med of medications(); track med.name) {
+                  <tr>
+                    <td>
+                      <mat-icon [class.taken]="med.taken">
+                        {{ med.taken ? 'check_circle' : 'radio_button_unchecked' }}
+                      </mat-icon>
+                    </td>
+                    <td>{{ med.name }}</td>
+                    <td>
+                      <mat-icon class="calendar-icon">calendar_today</mat-icon>
+                      {{ med.time }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="recommendations-card">
+          <mat-card-header>
+            <mat-card-title>Recommendations</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="recommendations-text">{{ recommendations() }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  } @else {
+    <div class="no-patient">
+      <mat-icon class="no-patient-icon">person_off</mat-icon>
+      <h2>No Patient Profile Found</h2>
+      <p>Unable to load patient information</p>
+    </div>
+  }
+</div>

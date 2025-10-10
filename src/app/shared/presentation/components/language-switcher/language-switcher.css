@@ -1,0 +1,47 @@
+:host {
+  display: inline-flex;
+}
+
+mat-button-toggle-group {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+mat-button-toggle {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+mat-button-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+mat-button-toggle.mat-button-toggle-checked {
+  background-color: #5eb9d7;
+  color: white;
+}
+
+mat-button-toggle .mat-button-toggle-label-content {
+  padding: 0 16px;
+  line-height: 36px;
+}
+
+@media (max-width: 600px) {
+  mat-button-toggle .mat-button-toggle-label-content {
+    padding: 0 12px;
+    line-height: 32px;
+    font-size: 12px;
+  }
+}
+
+mat-button-toggle:focus-visible {
+  outline: 2px solid #5eb9d7;
+  outline-offset: 2px;
+}

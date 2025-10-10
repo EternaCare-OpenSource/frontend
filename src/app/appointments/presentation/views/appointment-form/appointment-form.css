@@ -1,0 +1,279 @@
+.appointment-form-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.back-button {
+  color: #666;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+
+.form-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 20px 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.cancel-button,
+.submit-button {
+  min-width: 150px;
+  height: 48px;
+  font-weight: 600;
+}
+
+.payment-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.payment-card,
+.info-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.payment-method-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-method-item:hover {
+  background-color: #bbdefb;
+  transform: translateX(4px);
+}
+
+.payment-method-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.payment-method-item.disabled:hover {
+  background-color: #e3f2fd;
+  transform: none;
+}
+
+.method-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #5eb9d7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.method-inner-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.payment-method-item:first-child .method-inner-circle {
+  background-color: #5eb9d7;
+}
+
+.method-details {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.method-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #333;
+}
+
+.payment-logo {
+  font-weight: 700;
+  font-size: 20px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+}
+
+.yape-logo {
+  background-color: #722c8f;
+}
+
+.plin-logo {
+  background-color: #00a7e1;
+}
+
+.pago-logo {
+  background-color: #ffa500;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.info-card mat-card-content {
+  text-align: center;
+}
+
+.info-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.info-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #5eb9d7;
+}
+
+.info-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.info-list {
+  text-align: left;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.info-list li {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 1200px) {
+  .form-layout {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-sidebar {
+    flex-direction: row;
+  }
+
+  .payment-card,
+  .info-card {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-sidebar {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .appointment-form-container {
+    padding: 16px;
+  }
+
+  .header-section {
+    margin-bottom: 16px;
+  }
+
+  .form-card mat-card-content {
+    padding: 16px;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+  }
+}

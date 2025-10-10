@@ -1,0 +1,480 @@
+.patient-profile-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5f73 100%);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  color: white;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: white;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.patient-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.patient-avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+.patient-basic-info {
+  flex: 1;
+}
+
+.patient-name {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+}
+
+.patient-id {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.patient-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-chip,
+.status-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.meta-chip mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.status-chip {
+  background-color: #4caf50;
+  color: white;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.header-actions button {
+  color: white;
+  border-color: white;
+}
+
+.profile-content {
+  margin-top: 24px;
+}
+
+.profile-tabs {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+  padding: 24px;
+  min-height: 400px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.info-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #5eb9d7 0%, #4a9bb8 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+.card-icon.medical {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+}
+
+.card-icon.doctor {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+}
+
+.card-icon.emergency {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.card-icon.warning {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.doctor-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.doctor-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.doctor-details {
+  flex: 1;
+}
+
+.doctor-name {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.doctor-specialization {
+  margin: 0 0 12px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.doctor-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.doctor-contact mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #5eb9d7;
+}
+
+.history-card,
+.medications-card,
+.allergies-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-item {
+  padding: 16px 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.condition-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.history-details {
+  display: flex;
+  gap: 24px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.detail mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #5eb9d7;
+}
+
+.medications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.medication-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.medication-card:hover {
+  border-color: #5eb9d7;
+  box-shadow: 0 4px 12px rgba(94, 185, 215, 0.2);
+}
+
+.med-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.med-icon {
+  color: #5eb9d7;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.med-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.med-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.med-detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.med-detail .label {
+  font-weight: 600;
+  color: #666;
+}
+
+.med-detail .value {
+  color: #333;
+}
+
+.allergies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.allergy-item {
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+}
+
+.allergy-item.severe {
+  background-color: #ffebee;
+  border-left-color: #f44336;
+}
+
+.allergy-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.allergy-icon {
+  color: #ff9800;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.allergy-item.severe .allergy-icon {
+  color: #f44336;
+}
+
+.allergy-info {
+  flex: 1;
+}
+
+.allergen-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.allergy-type {
+  font-size: 13px;
+  color: #666;
+}
+
+.severity-chip {
+  font-weight: 600;
+  color: white;
+}
+
+.allergy-reaction {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.no-data {
+  text-align: center;
+  padding: 48px;
+  color: #999;
+  font-size: 16px;
+}
+
+@media (max-width: 960px) {
+  .patient-profile-container {
+    padding: 16px;
+  }
+
+  .profile-header {
+    padding: 24px;
+  }
+
+  .header-content {
+    flex-direction: column;
+  }
+
+  .patient-summary {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .patient-name {
+    font-size: 24px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions button {
+    flex: 1;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .medications-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .patient-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .patient-name {
+    font-size: 20px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    flex-direction: column;
+  }
+}

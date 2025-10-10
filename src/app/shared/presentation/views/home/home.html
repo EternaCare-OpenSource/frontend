@@ -1,0 +1,78 @@
+<div class="home-container">
+  <div class="welcome-section">
+    <h1 class="welcome-title">
+      {{ getGreeting() }}, {{ currentUser()?.firstName }}! 👋
+    </h1>
+    <p class="welcome-subtitle">
+      Welcome to your CareLink dashboard
+    </p>
+  </div>
+
+  <div class="cards-grid">
+    @for (card of dashboardCards(); track card.title) {
+      <mat-card class="dashboard-card" [routerLink]="card.route">
+        <mat-card-content class="card-content">
+          <div class="card-icon" [style.background-color]="card.color">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">{{ card.title }}</h3>
+            @if (card.count !== '') {
+              <div class="card-count">{{ card.count }}</div>
+            }
+          </div>
+          <mat-icon class="card-arrow">arrow_forward</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <div class="quick-actions">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="actions-grid">
+      <button mat-raised-button color="primary" routerLink="/appointments/new">
+        <mat-icon>add</mat-icon>
+        New Appointment
+      </button>
+      <button mat-raised-button routerLink="/messaging/conversations">
+        <mat-icon>message</mat-icon>
+        Send Message
+      </button>
+      <button mat-raised-button routerLink="/health-monitoring/reports">
+        <mat-icon>description</mat-icon>
+        View Reports
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="activity-card">
+    <mat-card-header>
+      <mat-card-title>Recent Activity</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="activity-list">
+        <div class="activity-item">
+          <mat-icon class="activity-icon">event</mat-icon>
+          <div class="activity-details">
+            <div class="activity-text">Appointment scheduled for tomorrow</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <mat-icon class="activity-icon">message</mat-icon>
+          <div class="activity-details">
+            <div class="activity-text">New message from Dr. Watson</div>
+            <div class="activity-time">5 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <mat-icon class="activity-icon">description</mat-icon>
+          <div class="activity-details">
+            <div class="activity-text">New medical report available</div>
+            <div class="activity-time">1 day ago</div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

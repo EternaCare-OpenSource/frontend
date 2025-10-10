@@ -1,0 +1,199 @@
+<div class="messaging-container">
+
+  <div class="conversations-sidebar">
+
+    <div class="sidebar-header">
+      <button mat-icon-button routerLink="/home" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="sidebar-title">Messages</h2>
+    </div>
+
+    <div class="search-box">
+      <mat-form-field appearance="outline" class="search-field">
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search conversations">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="conversations-list">
+      @if (filteredConversations().length === 0) {
+        <div class="empty-conversations">
+          <mat-icon class="empty-icon">chat_bubble_outline</mat-icon>
+          <p>No conversations found</p>
+        </div>
+      } @else {
+        @for (conversation of filteredConversations(); track conversation.id; let idx = $index) {
+          <div
+            class="conversation-item"
+            [class.active]="selectedConversationId() === conversation.id"
+            (click)="selectConversation(conversation)">
+
+            <div
+              class="conversation-avatar"
+              [style.background-color]="getAvatarColor(idx)">
+              @if (conversation.participantNames.length === 1) {
+                {{ getAvatarInitials(conversation.participantNames[0]) }}
+              } @else {
+                <mat-icon>group</mat-icon>
+              }
+            </div>
+
+            <div class="conversation-content">
+              <div class="conversation-header">
+                <span class="conversation-name">{{ conversation.displayName }}</span>
+                <span class="conversation-time">{{ formatTime(conversation.lastMessageTime) }}</span>
+              </div>
+              <div class="conversation-preview">
+                <p class="last-message">{{ conversation.lastMessageContent }}</p>
+                @if (conversation.unreadCount > 0) {
+                  <span class="unread-badge">{{ conversation.unreadCount }}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          @if (!$last) {
+            <mat-divider></mat-divider>
+          }
+        }
+      }
+    </div>
+  </div>
+
+  <div class="chat-panel">
+    @if (selectedConversation(); as conversation) {
+
+      <div class="chat-header">
+        <div class="chat-header-content">
+          <div
+            class="chat-avatar"
+            [style.background-color]="getAvatarColor(conversation.id)">
+            @if (conversation.participantNames.length === 1) {
+              {{ getAvatarInitials(conversation.participantNames[0]) }}
+            } @else {
+              <mat-icon>group</mat-icon>
+            }
+          </div>
+          <div class="chat-info">
+            <h3 class="chat-name">{{ conversation.displayName }}</h3>
+            <p class="chat-status">Online</p>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button mat-icon-button>
+            <mat-icon>phone</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>videocam</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="messages-area">
+        @if (conversationMessages().length === 0) {
+          <div class="no-messages">
+            <mat-icon class="no-messages-icon">chat</mat-icon>
+            <p>No messages yet</p>
+            <p class="sub-text">Start the conversation!</p>
+          </div>
+        } @else {
+          @for (message of conversationMessages(); track message.id) {
+            <div
+              class="message-wrapper"
+              [class.own-message]="isMyMessage(message)">
+
+              @if (!isMyMessage(message)) {
+                <div class="message-avatar">
+                  {{ getAvatarInitials(message.senderName) }}
+                </div>
+              }
+
+              <div class="message-bubble">
+                @if (!isMyMessage(message)) {
+                  <div class="message-sender">{{ message.senderName }}</div>
+                }
+                <div class="message-text">{{ message.content }}</div>
+                <div class="message-time">{{ formatTime(message.sentAt) }}</div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="message-input-container">
+        <mat-divider></mat-divider>
+        <div class="message-input-wrapper">
+          <button mat-icon-button class="attach-button">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+
+          <mat-form-field appearance="outline" class="message-input-field">
+            <input
+              matInput
+              [(ngModel)]="newMessageText"
+              (ngModelChange)="newMessageText.set($event)"
+              (keyup.enter)="sendMessage()"
+              placeholder="Type a message...">
+          </mat-form-field>
+
+          <button mat-icon-button class="emoji-button">
+            <mat-icon>emoji_emotions</mat-icon>
+          </button>
+
+          <button
+            mat-fab
+            color="primary"
+            class="send-button"
+            (click)="sendMessage()"
+            [disabled]="!newMessageText().trim()">
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    } @else {
+      <div class="no-selection">
+        <mat-icon class="no-selection-icon">chat_bubble_outline</mat-icon>
+        <h3>Select a conversation</h3>
+        <p>Choose a conversation from the list to start messaging</p>
+      </div>
+    }
+  </div>
+
+  <div class="info-sidebar">
+    <div class="info-header">
+      <h3>See more</h3>
+    </div>
+
+    <div class="info-content">
+      <p class="info-text">
+        View additional conversation details, shared media, and settings here.
+      </p>
+
+      <div class="info-section">
+        <mat-icon>photo_library</mat-icon>
+        <span>Shared Media</span>
+      </div>
+
+      <div class="info-section">
+        <mat-icon>link</mat-icon>
+        <span>Shared Links</span>
+      </div>
+
+      <div class="info-section">
+        <mat-icon>settings</mat-icon>
+        <span>Chat Settings</span>
+      </div>
+    </div>
+  </div>
+</div>

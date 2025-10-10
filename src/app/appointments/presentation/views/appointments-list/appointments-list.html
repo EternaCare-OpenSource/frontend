@@ -1,0 +1,187 @@
+<div class="appointments-list-container">
+
+  <div class="header-section">
+    <div class="title-section">
+      <h1 class="page-title">Appointments Management</h1>
+      <p class="page-subtitle">View and manage all appointments</p>
+    </div>
+
+    <div class="actions-section">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search appointments</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search by patient, doctor, or reason">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="add-button" (click)="createAppointment()">
+        <mat-icon>add</mat-icon>
+        New Appointment
+      </button>
+    </div>
+  </div>
+
+  <div class="appointments-section">
+    <h2 class="section-title">
+      <mat-icon>schedule</mat-icon>
+      Upcoming Appointments ({{ upcomingAppointments().length }})
+    </h2>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Loading appointments...</p>
+      </div>
+    } @else if (upcomingAppointments().length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">event_busy</mat-icon>
+        <h3>No upcoming appointments</h3>
+        <p>Schedule a new appointment to get started</p>
+        <button mat-raised-button color="primary" (click)="createAppointment()">
+          <mat-icon>add</mat-icon>
+          New Appointment
+        </button>
+      </div>
+    } @else {
+      <div class="appointments-grid">
+        @for (appointment of upcomingAppointments(); track appointment.id) {
+          <mat-card class="appointment-card">
+            <mat-card-content>
+              <div class="card-header">
+                <div class="date-badge">
+                  <div class="date-month">{{ appointment.appointmentDate | date: 'MMM' }}</div>
+                  <div class="date-day">{{ appointment.appointmentDate | date: 'd' }}</div>
+                </div>
+
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  class="menu-button">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="viewAppointment(appointment)">
+                    <mat-icon>visibility</mat-icon>
+                    <span>View Details</span>
+                  </button>
+                  <button mat-menu-item (click)="editAppointment(appointment)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                  </button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="deleteAppointment(appointment)" class="delete-option">
+                    <mat-icon>delete</mat-icon>
+                    <span>Cancel</span>
+                  </button>
+                </mat-menu>
+              </div>
+
+              <div class="appointment-info">
+                <div class="info-row">
+                  <mat-icon class="info-icon">schedule</mat-icon>
+                  <span class="info-label">Time:</span>
+                  <span class="info-value">{{ appointment.appointmentTime }}</span>
+                </div>
+
+                <div class="info-row">
+                  <mat-icon class="info-icon">person</mat-icon>
+                  <span class="info-label">Patient:</span>
+                  <span class="info-value">{{ appointment.patientName || 'N/A' }}</span>
+                </div>
+
+                <div class="info-row">
+                  <mat-icon class="info-icon">medical_services</mat-icon>
+                  <span class="info-label">Doctor:</span>
+                  <span class="info-value">{{ appointment.doctorName || 'N/A' }}</span>
+                </div>
+
+                <div class="info-row full-width">
+                  <mat-icon class="info-icon">description</mat-icon>
+                  <span class="info-label">Reason:</span>
+                  <span class="info-value">{{ appointment.reason }}</span>
+                </div>
+              </div>
+
+              <mat-chip [color]="getStatusColor(appointment.status)" selected class="status-chip">
+                {{ appointment.status }}
+              </mat-chip>
+
+              <div class="card-actions">
+                <button mat-stroked-button (click)="viewAppointment(appointment)" class="action-button">
+                  View Details
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  </div>
+
+  @if (pastAppointments().length > 0) {
+    <div class="appointments-section">
+      <h2 class="section-title">
+        <mat-icon>history</mat-icon>
+        Past Appointments ({{ pastAppointments().length }})
+      </h2>
+
+      <div class="appointments-grid">
+        @for (appointment of pastAppointments(); track appointment.id) {
+          <mat-card class="appointment-card past">
+            <mat-card-content>
+              <div class="card-header">
+                <div class="date-badge past">
+                  <div class="date-month">{{ appointment.appointmentDate | date: 'MMM' }}</div>
+                  <div class="date-day">{{ appointment.appointmentDate | date: 'd' }}</div>
+                </div>
+
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="pastMenu"
+                  class="menu-button">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #pastMenu="matMenu">
+                  <button mat-menu-item (click)="viewAppointment(appointment)">
+                    <mat-icon>visibility</mat-icon>
+                    <span>View Details</span>
+                  </button>
+                  <button mat-menu-item (click)="deleteAppointment(appointment)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </div>
+
+              <div class="appointment-info">
+                <div class="info-row">
+                  <mat-icon class="info-icon">schedule</mat-icon>
+                  <span class="info-value">{{ appointment.appointmentTime }}</span>
+                </div>
+
+                <div class="info-row">
+                  <mat-icon class="info-icon">person</mat-icon>
+                  <span class="info-value">{{ appointment.patientName || 'N/A' }}</span>
+                </div>
+
+                <div class="info-row">
+                  <mat-icon class="info-icon">medical_services</mat-icon>
+                  <span class="info-value">{{ appointment.doctorName || 'N/A' }}</span>
+                </div>
+              </div>
+
+              <mat-chip [color]="getStatusColor(appointment.status)" selected class="status-chip">
+                {{ appointment.status }}
+              </mat-chip>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+</div>

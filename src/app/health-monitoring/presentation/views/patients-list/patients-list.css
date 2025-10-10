@@ -1,0 +1,249 @@
+.patients-list-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.header-section {
+  margin-bottom: 24px;
+}
+
+.title-section {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.actions-section {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.search-field {
+  flex: 1;
+  max-width: 400px;
+}
+
+.add-button {
+  height: 48px;
+  font-weight: 600;
+}
+
+.table-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.patients-table {
+  width: 100%;
+  background-color: white;
+}
+
+.patients-table th {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+  padding: 16px;
+}
+
+.patients-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+  background-color: #f9f9f9;
+}
+
+.patient-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5eb9d7 0%, #4a9bb8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+}
+
+.patient-name-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patient-name-cell .name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.patient-name-cell .email {
+  font-size: 12px;
+  color: #999;
+}
+
+.patient-id {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #5eb9d7;
+}
+
+.blood-chip {
+  font-weight: 600;
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.action-button {
+  color: #666;
+}
+
+.delete-action {
+  color: #f44336;
+}
+
+.delete-action mat-icon {
+  color: #f44336;
+}
+
+.table-footer {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.results-count {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.results-count strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.loading-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #5eb9d7;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-size: 16px;
+  color: #666;
+  margin-top: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .actions-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    max-width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+  }
+
+  .patients-table {
+    font-size: 12px;
+  }
+
+  .patients-table th,
+  .patients-table td {
+    padding: 12px 8px;
+  }
+
+  .patient-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .patients-table th:nth-child(4),
+  .patients-table td:nth-child(4),
+  .patients-table th:nth-child(5),
+  .patients-table td:nth-child(5),
+  .patients-table th:nth-child(6),
+  .patients-table td:nth-child(6),
+  .patients-table th:nth-child(9),
+  .patients-table td:nth-child(9) {
+    display: none;
+  }
+}
