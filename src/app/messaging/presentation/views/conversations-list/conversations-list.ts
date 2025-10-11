@@ -9,15 +9,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
-import {MessagingStore} from '../../../application/messaging.store';
-import {IamStore} from '../../../../iam/application/iam.store';
-import {Conversation} from '../../../domain/model/conversation.entity';
-import {Message} from '../../../domain/model/message.entity';
+import { MessagingStore } from '../../../application/messaging.store';
+import { IamStore } from '../../../../iam/application/iam.store';
+import { Conversation } from '../../../domain/model/conversation.entity';
+import { Message } from '../../../domain/model/message.entity';
 
 /**
- * ConversationsList Component
- * @description This component displays a list of conversations and allows users to select and view messages.
- * It also provides functionality to send new messages and mark messages as read.
+ *
+ * Conversations list and chat view. Lets users browse conversations, read messages,
+ * send new messages, and auto-mark unread as read when a conversation is opened.
  */
 @Component({
   selector: 'app-conversations-list',
@@ -38,28 +38,67 @@ import {Message} from '../../../domain/model/message.entity';
   styleUrls: ['./conversations-list.css']
 })
 export class ConversationsList {
+  /**
+   *
+   * Store dependencies for messaging data and current user context.
+   */
   private messagingStore = inject(MessagingStore);
   private iamStore = inject(IamStore);
 
+  /**
+   *
+   * Reactive source of conversations from the store.
+   */
   readonly conversations = this.messagingStore.conversations;
+
+  /**
+   *
+   * Reactive reference to the authenticated user.
+   */
   readonly currentUser = this.iamStore.currentUser;
 
+  /**
+   *
+   * Currently selected conversation id; null means none selected.
+   */
   readonly selectedConversationId = signal<number | null>(null);
+
+  /**
+   *
+   * Draft text for a new outgoing message.
+   */
   readonly newMessageText = signal('');
+
+  /**
+   *
+   * Search query used to filter the conversation list.
+   */
   readonly searchQuery = signal('');
 
+  /**
+   *
+   * Selected conversation entity resolved from the store.
+   */
   readonly selectedConversation = computed(() => {
     const id = this.selectedConversationId();
     if (!id) return null;
     return this.messagingStore.getConversationById(id)();
   });
 
+  /**
+   *
+   * Messages for the selected conversation, or empty array when none selected.
+   */
   readonly conversationMessages = computed(() => {
     const id = this.selectedConversationId();
     if (!id) return [];
     return this.messagingStore.getMessagesByConversation(id)() || [];
   });
 
+  /**
+   *
+   * Conversations filtered by participant names or last message content.
+   */
   readonly filteredConversations = computed(() => {
     const allConversations = this.conversations() || [];
     const query = this.searchQuery().toLowerCase();
@@ -72,6 +111,10 @@ export class ConversationsList {
     );
   });
 
+  /**
+   *
+   * Constructor side-effect: auto-select first conversation when list loads and none selected.
+   */
   constructor() {
     effect(() => {
       const convs = this.conversations() || [];
@@ -81,17 +124,20 @@ export class ConversationsList {
     });
   }
 
+  /**
+   *
+   * Selects a conversation and marks its unread messages as read.
+   * @param conversation Conversation to open.
+   */
   selectConversation(conversation: Conversation): void {
     this.selectedConversationId.set(conversation.id);
     this.markMessagesAsRead(conversation.id);
   }
 
   /**
-   * Sends a new message to the selected conversation.
-   * @description This method checks if the user has selected a conversation and if the message text is not empty.
-   * If both conditions are met, it creates a new Message object with the current user's details and the selected conversation ID.
-   * The message is then added to the store and the new message text is cleared.
-   * @throws An error if the user is not logged in or if the selected conversation ID is not available.'
+   *
+   * Sends a new text message in the selected conversation (no-op if invalid state).
+   * Creates a Message entity and persists it via MessagingStore.
    */
   sendMessage(): void {
     const text = this.newMessageText().trim();
@@ -117,6 +163,11 @@ export class ConversationsList {
     this.newMessageText.set('');
   }
 
+  /**
+   *
+   * Marks all unread messages in a conversation as read.
+   * @param conversationId Conversation identifier.
+   */
   markMessagesAsRead(conversationId: number): void {
     const messages = this.messagingStore.getMessagesByConversation(conversationId)() || [];
     messages.filter(m => !m.isRead).forEach(m => {
@@ -124,6 +175,12 @@ export class ConversationsList {
     });
   }
 
+  /**
+   *
+   * Derives two-letter initials from a participant name for avatars.
+   * @param name Full name string.
+   * @returns Uppercase initials or '??' when name is empty.
+   */
   getAvatarInitials(name: string): string {
     if (!name) return '??';
     const names = name.split(' ');
@@ -132,11 +189,24 @@ export class ConversationsList {
       : name.substring(0, 2).toUpperCase();
   }
 
+  /**
+   *
+   * Cycles through a palette to assign consistent avatar colors.
+   * @param index Index of the participant.
+   * @returns Hex color string.
+   */
   getAvatarColor(index: number): string {
     const colors = ['#5eb9d7', '#4caf50', '#ff9800', '#e91e63', '#9c27b0', '#2196f3'];
     return colors[index % colors.length];
   }
 
+  /**
+   *
+   * Formats an ISO timestamp into a relative time (e.g., '5m ago').
+   * Falls back to locale date when older than a week.
+   * @param dateString ISO date-time string.
+   * @returns Human-friendly time label.
+   */
   formatTime(dateString: string): string {
     if (!dateString) return '';
 
@@ -154,6 +224,12 @@ export class ConversationsList {
     return date.toLocaleDateString();
   }
 
+  /**
+   *
+   * Indicates whether a message was sent by the current user.
+   * @param message Message to test.
+   * @returns True if the senderId matches the current user id.
+   */
   isMyMessage(message: Message): boolean {
     const user = this.currentUser();
     return user ? message.senderId === user.id : false;

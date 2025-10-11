@@ -8,12 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {IamStore} from '../../../application/iam.store';
-
+import { IamStore } from '../../../application/iam.store';
 
 /**
- * Login Component
- * @description This component handles the login process for the application.
+ *
+ * Login page with reactive form, validation, and feedback via MatSnackBar.
+ * Uses IamStore for authentication and Router for navigation.
  */
 @Component({
   selector: 'app-login',
@@ -32,17 +32,25 @@ import {IamStore} from '../../../application/iam.store';
   styleUrls: ['./login.css']
 })
 export class Login {
+  /**
+   *
+   * DI: form builder, auth store, router, and snackbar.
+   */
   private fb = inject(FormBuilder);
   private iamStore = inject(IamStore);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
 
+  /**
+   *
+   * UI state signals.
+   */
   readonly hidePassword = signal(true);
   readonly loading = signal(false);
 
   /**
-   * Login Form Group
-   * @description This form group contains the login form fields and their validators.
+   *
+   * Reactive login form with validators.
    */
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -50,10 +58,8 @@ export class Login {
   });
 
   /**
-   * Submit Login
-   * @description This function handles the submission of the login form.
-   * It validates the form, performs login logic, and navigates to the home page on success.
-   * If login fails, it displays an error message using the MatSnackBar service.
+   *
+   * Handles form submission: validates, attempts login, and navigates or shows error.
    */
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -84,15 +90,19 @@ export class Login {
     }, 1000);
   }
 
+  /**
+   *
+   * Toggles the visibility of the password input field.
+   */
   togglePasswordVisibility(): void {
     this.hidePassword.update(value => !value);
   }
 
   /**
-   * Get Error Message
-   * @description This function returns the appropriate error message for a given form field.
-   * @param field - The name of the form field.
-   * @returns The error message for the specified field.
+   *
+   * Returns a human-friendly validation message for a given field.
+   * @param field Form control name ('email' | 'password').
+   * @returns Error string or empty when valid.
    */
   getErrorMessage(field: string): string {
     const control = this.loginForm.get(field);
@@ -100,15 +110,12 @@ export class Login {
     if (control?.hasError('required')) {
       return `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
     }
-
     if (control?.hasError('email')) {
       return 'Please enter a valid email';
     }
-
     if (control?.hasError('minlength')) {
       return 'Password must be at least 6 characters';
     }
-
     return '';
   }
 }

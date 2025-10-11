@@ -12,16 +12,15 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {HealthMonitoringStore} from '../../../../health-monitoring/application/health-monitoring.store';
-import {IamStore} from '../../../application/iam.store';
-import {AppointmentsStore} from '../../../../appointments/application/appointments.store';
-import {MessagingStore} from '../../../../messaging/application/messaging.store';
+import { HealthMonitoringStore } from '../../../../health-monitoring/application/health-monitoring.store';
+import { IamStore } from '../../../application/iam.store';
+import { AppointmentsStore } from '../../../../appointments/application/appointments.store';
+import { MessagingStore } from '../../../../messaging/application/messaging.store';
 
 /**
- * Profile Component
- * @description This component handles the profile management functionality for the application.
- * It includes functionality to edit profile details, change password, manage notification settings,
- * and manage privacy settings.
+ *
+ * Profile page: edit user info, change password, and manage notification/privacy settings.
+ * Reactive forms + Angular Signals; aggregates stats from multiple stores based on role.
  */
 @Component({
   selector: 'app-profile',
@@ -46,6 +45,10 @@ import {MessagingStore} from '../../../../messaging/application/messaging.store'
   styleUrl: './profile.css'
 })
 export class Profile {
+  /**
+   *
+   * DI: forms, stores, snackbar and router.
+   */
   private fb = inject(FormBuilder);
   private iamStore = inject(IamStore);
   private healthMonitoringStore = inject(HealthMonitoringStore);
@@ -54,14 +57,23 @@ export class Profile {
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
 
+  /**
+   *
+   * Current authenticated user.
+   */
   readonly currentUser = this.iamStore.currentUser;
+
+  /**
+   *
+   * UI flags for edit mode and saving state.
+   */
   readonly isEditing = signal(false);
   readonly loading = signal(false);
 
   /**
-   * User Stats
-   * @description This computed signal returns the user statistics based on the current user's role.
-   * @returns An object containing user statistics for the current user's role.
+   *
+   * Role-aware user statistics for summary cards.
+   * @returns Object with counters relevant to the user role.
    */
   readonly userStats = computed(() => {
     const role = this.currentUser()?.role?.name;
@@ -74,7 +86,6 @@ export class Profile {
         messages: this.messagingStore.messageCount()
       };
     } else if (role === 'Patient') {
-      const userEmail = this.currentUser()?.email;
       const userAppointments = this.appointmentsStore.appointments()
         .filter(apt => apt.patientName?.includes(this.currentUser()?.firstName || ''));
 
@@ -96,6 +107,10 @@ export class Profile {
     };
   });
 
+  /**
+   *
+   * Profile form with basic validation. Name/email are readonly unless editing.
+   */
   profileForm: FormGroup = this.fb.group({
     firstName: [{ value: '', disabled: true }, [Validators.required]],
     lastName: [{ value: '', disabled: true }, [Validators.required]],
@@ -105,6 +120,10 @@ export class Profile {
     confirmPassword: ['', [Validators.minLength(6)]]
   });
 
+  /**
+   *
+   * Notification preferences toggles.
+   */
   notificationSettings = signal({
     emailNotifications: true,
     appointmentReminders: true,
@@ -113,6 +132,10 @@ export class Profile {
     weeklyDigest: false
   });
 
+  /**
+   *
+   * Privacy preferences toggles.
+   */
   privacySettings = signal({
     profileVisible: true,
     showEmail: false,
@@ -120,10 +143,18 @@ export class Profile {
     dataSharing: true
   });
 
+  /**
+   *
+   * Lifecycle init: hydrate form with user data.
+   */
   ngOnInit(): void {
     this.loadUserData();
   }
 
+  /**
+   *
+   * Loads current user info into the profile form.
+   */
   loadUserData(): void {
     const user = this.currentUser();
     if (user) {
@@ -135,6 +166,10 @@ export class Profile {
     }
   }
 
+  /**
+   *
+   * Toggles edit mode; enables/disables name fields and restores values when exiting.
+   */
   toggleEdit(): void {
     this.isEditing.update(v => !v);
 
@@ -148,6 +183,10 @@ export class Profile {
     }
   }
 
+  /**
+   *
+   * Persists profile changes (mocked with timeout) and shows a snackbar.
+   */
   saveProfile(): void {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
@@ -167,6 +206,10 @@ export class Profile {
     }, 1000);
   }
 
+  /**
+   *
+   * Validates and applies a password change (mocked), with basic checks.
+   */
   changePassword(): void {
     const current = this.profileForm.get('currentPassword')?.value;
     const newPass = this.profileForm.get('newPassword')?.value;
@@ -200,6 +243,10 @@ export class Profile {
     });
   }
 
+  /**
+   *
+   * Saves notification preferences (mocked).
+   */
   saveNotificationSettings(): void {
     this.snackBar.open('Notification settings saved!', 'Close', {
       duration: 3000,
@@ -207,6 +254,10 @@ export class Profile {
     });
   }
 
+  /**
+   *
+   * Saves privacy preferences (mocked).
+   */
   savePrivacySettings(): void {
     this.snackBar.open('Privacy settings saved!', 'Close', {
       duration: 3000,
@@ -214,6 +265,10 @@ export class Profile {
     });
   }
 
+  /**
+   *
+   * Initiates account deletion after user confirmation (mocked).
+   */
   deleteAccount(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       this.snackBar.open('Account deletion initiated', 'Close', {
@@ -223,23 +278,39 @@ export class Profile {
     }
   }
 
+  /**
+   *
+   * Derives initials from current user name for avatar badge.
+   * @returns Two-letter uppercase initials, or 'U' if unavailable.
+   */
   getInitials(): string {
     const user = this.currentUser();
     if (!user) return 'U';
     return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
   }
 
+  /**
+   *
+   * Maps role to a representative hex color for the role badge.
+   * @returns Hex color string.
+   */
   getRoleBadgeColor(): string {
     const role = this.currentUser()?.role?.name;
     const colors: { [key: string]: string } = {
       'Patient': '#4caf50',
       'Doctor': '#2196f3',
       'Family': '#ff9800',
-      'Admin': '#f44336'
+      'Admin':  '#f44336'
     };
     return colors[role || ''] || '#666';
   }
 
+  /**
+   *
+   * Generates human-friendly validation messages for profile form fields.
+   * @param field Form control name.
+   * @returns Error string or empty when valid.
+   */
   getErrorMessage(field: string): string {
     const control = this.profileForm.get(field);
     if (control?.hasError('required')) {

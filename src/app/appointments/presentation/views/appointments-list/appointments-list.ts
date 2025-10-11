@@ -35,13 +35,18 @@ import { Appointment } from '../../../domain/model/appointment.entity';
   styleUrl: './appointments-list.css'
 })
 export class AppointmentsList {
+  // Inject application stores and router service
   private appointmentsStore = inject(AppointmentsStore);
   private router = inject(Router);
 
+  // Reactive data sources from the store
   readonly appointments = this.appointmentsStore.appointments;
   readonly loading = this.appointmentsStore.loading;
+
+  // Search query signal for real-time filtering
   readonly searchQuery = signal('');
 
+  // Computed signal that filters appointments by search criteria
   readonly filteredAppointments = computed(() => {
     const query = this.searchQuery().toLowerCase();
     if (!query) return this.appointments();
@@ -54,6 +59,7 @@ export class AppointmentsList {
     );
   });
 
+  // Columns displayed in the Material table
   readonly displayedColumns: string[] = [
     'date',
     'time',
@@ -64,6 +70,7 @@ export class AppointmentsList {
     'actions'
   ];
 
+  // Computed signal returning only upcoming appointments, sorted by date
   readonly upcomingAppointments = computed(() => {
     const today = new Date();
     return this.filteredAppointments()
@@ -71,6 +78,7 @@ export class AppointmentsList {
       .sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime());
   });
 
+  // Computed signal returning past appointments, sorted in descending order
   readonly pastAppointments = computed(() => {
     const today = new Date();
     return this.filteredAppointments()
@@ -78,24 +86,29 @@ export class AppointmentsList {
       .sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime());
   });
 
+  // Navigates to the appointment creation form
   createAppointment(): void {
     this.router.navigate(['/appointments/new']);
   }
 
+  // Opens the detailed view of a selected appointment
   viewAppointment(appointment: Appointment): void {
     this.router.navigate(['/appointments/edit', appointment.id]);
   }
 
+  // Redirects to the edit page for a specific appointment
   editAppointment(appointment: Appointment): void {
     this.router.navigate(['/appointments/edit', appointment.id]);
   }
 
+  // Confirms and deletes a selected appointment from the store
   deleteAppointment(appointment: Appointment): void {
     if (confirm(`Delete appointment with ${appointment.patientName}?`)) {
       this.appointmentsStore.deleteAppointment(appointment.id);
     }
   }
 
+  // Returns color scheme for appointment status chips
   getStatusColor(status: string): string {
     const colors: { [key: string]: string } = {
       'Scheduled': 'primary',
@@ -106,6 +119,7 @@ export class AppointmentsList {
     return colors[status] || '';
   }
 
+  // Formats date strings for display in the appointment list
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('en-US', {
       weekday: 'short',

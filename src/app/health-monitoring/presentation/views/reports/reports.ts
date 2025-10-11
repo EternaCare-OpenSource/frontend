@@ -6,9 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
-import {IamStore} from '../../../../iam/application/iam.store';
+import { IamStore } from '../../../../iam/application/iam.store';
 
-
+/**
+ *
+ * Structured metadata describing a downloadable medical report.
+ */
 interface MedicalReport {
   id: number;
   title: string;
@@ -18,6 +21,10 @@ interface MedicalReport {
   size: string;
 }
 
+/**
+ *
+ * Descriptor for a recommended medical test with frequency and illustration.
+ */
 interface MedicalTest {
   title: string;
   description: string;
@@ -25,6 +32,11 @@ interface MedicalTest {
   image: string;
 }
 
+/**
+ *
+ * Reports module: lists patient reports and recommended tests (weekly/monthly).
+ * Uses Signals to expose immutable, reactive read models to the template.
+ */
 @Component({
   selector: 'app-reports',
   standalone: true,
@@ -41,10 +53,22 @@ interface MedicalTest {
   styleUrls: ['./reports.css']
 })
 export class Reports {
+  /**
+   *
+   * IAM store dependency to access the current authenticated user.
+   */
   private iamStore = inject(IamStore);
 
+  /**
+   *
+   * Reactive reference to the current user.
+   */
   readonly currentUser = this.iamStore.currentUser;
 
+  /**
+   *
+   * Patient report entries available for download or preview.
+   */
   readonly patientReports = signal<MedicalReport[]>([
     {
       id: 1,
@@ -72,6 +96,10 @@ export class Reports {
     }
   ]);
 
+  /**
+   *
+   * Recommended examinations performed on a weekly cadence.
+   */
   readonly weeklyTests = signal<MedicalTest[]>([
     {
       title: 'BLOOD TEST',
@@ -87,6 +115,10 @@ export class Reports {
     }
   ]);
 
+  /**
+   *
+   * Recommended examinations performed on a monthly cadence.
+   */
   readonly monthlyTests = signal<MedicalTest[]>([
     {
       title: 'OCULIST',
@@ -102,14 +134,30 @@ export class Reports {
     }
   ]);
 
+  /**
+   *
+   * Initiates the download of a report (placeholder for real download logic).
+   * @param report Report to download.
+   */
   downloadReport(report: MedicalReport): void {
     console.log('Downloading report:', report.fileName);
   }
 
+  /**
+   *
+   * Opens a report preview (placeholder for real viewer integration).
+   * @param report Report to preview.
+   */
   viewReport(report: MedicalReport): void {
     console.log('Viewing report:', report.fileName);
   }
 
+  /**
+   *
+   * Maps report type to a Material icon name for visual identification.
+   * @param type Report category label.
+   * @returns Icon name string.
+   */
   getReportIcon(type: string): string {
     const icons: { [key: string]: string } = {
       'Blood Test': 'bloodtype',
@@ -120,6 +168,12 @@ export class Reports {
     return icons[type] || 'description';
   }
 
+  /**
+   *
+   * Maps report type to a representative color used in chips/badges.
+   * @param type Report category label.
+   * @returns Hex color string.
+   */
   getReportColor(type: string): string {
     const colors: { [key: string]: string } = {
       'Blood Test': '#f44336',

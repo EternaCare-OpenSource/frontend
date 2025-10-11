@@ -11,11 +11,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {AppointmentsStore} from '../../../application/appointments.store';
-import {HealthMonitoringStore} from '../../../../health-monitoring/application/health-monitoring.store';
-import {Appointment} from '../../../domain/model/appointment.entity';
+import { AppointmentsStore } from '../../../application/appointments.store';
+import { HealthMonitoringStore } from '../../../../health-monitoring/application/health-monitoring.store';
+import { Appointment } from '../../../domain/model/appointment.entity';
 
-
+/**
+ * Appointment creation and edit form with reactive validation and store integration.
+ */
 @Component({
   selector: 'app-appointment-form',
   standalone: true,
@@ -37,6 +39,9 @@ import {Appointment} from '../../../domain/model/appointment.entity';
   styleUrls: ['./appointment-form.css']
 })
 export class AppointmentForm implements OnInit {
+  /**
+   * Injects Angular services and application stores.
+   */
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -44,12 +49,26 @@ export class AppointmentForm implements OnInit {
   private appointmentsStore = inject(AppointmentsStore);
   private healthMonitoringStore = inject(HealthMonitoringStore);
 
+  /**
+   * Reactive sources for patients and doctors selection.
+   */
   readonly patients = this.healthMonitoringStore.patients;
   readonly doctors = this.healthMonitoringStore.doctors;
+
+  /**
+   * UI state flags and identifiers.
+   */
   readonly loading = signal(false);
   readonly appointmentId = signal<number | null>(null);
+
+  /**
+   * Whether the form is in edit mode (id present).
+   */
   readonly isEditMode = computed(() => this.appointmentId() !== null);
 
+  /**
+   * Main appointment form with validators.
+   */
   appointmentForm: FormGroup = this.fb.group({
     patientId: [0, [Validators.required, Validators.min(1)]],
     doctorId: [0, [Validators.required, Validators.min(1)]],
@@ -59,12 +78,18 @@ export class AppointmentForm implements OnInit {
     notes: ['']
   });
 
+  /**
+   * Optional emergency contact details for the appointment.
+   */
   emergencyContactForm: FormGroup = this.fb.group({
     fullName: [''],
     email: ['', [Validators.email]],
     phone: ['']
   });
 
+  /**
+   * Supported payment methods displayed in the UI.
+   */
   readonly paymentMethods = signal([
     { name: 'Credit Card', icon: 'credit_card', enabled: true },
     { name: 'Yape', icon: 'smartphone', enabled: true },
@@ -72,6 +97,9 @@ export class AppointmentForm implements OnInit {
     { name: 'PagoEfectivo', icon: 'payments', enabled: true }
   ]);
 
+  /**
+   * Initializes edit mode by reading the route param and loading data if needed.
+   */
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -80,6 +108,9 @@ export class AppointmentForm implements OnInit {
     }
   }
 
+  /**
+   * Loads an existing appointment into the form for editing.
+   */
   loadAppointment(): void {
     const id = this.appointmentId();
     if (!id) return;
@@ -97,6 +128,9 @@ export class AppointmentForm implements OnInit {
     }
   }
 
+  /**
+   * Submits the form to create or update an appointment with validation feedback.
+   */
   onSubmit(): void {
     if (this.appointmentForm.invalid) {
       this.appointmentForm.markAllAsTouched();
@@ -130,15 +164,28 @@ export class AppointmentForm implements OnInit {
     this.router.navigate(['/appointments/calendar']);
   }
 
+  /**
+   * Formats a Date or ISO string into yyyy-mm-dd (ISO date-only).
+   * @param date Date object or ISO string.
+   * @returns ISO date string (yyyy-mm-dd).
+   */
   formatDate(date: Date | string): string {
     if (typeof date === 'string') return date;
     return date.toISOString().split('T')[0];
   }
 
+  /**
+   * Cancels the form and returns to the calendar view.
+   */
   cancel(): void {
     this.router.navigate(['/appointments/calendar']);
   }
 
+  /**
+   * Returns a human-readable validation message for a form control.
+   * @param controlName Control name from the appointmentForm.
+   * @returns Message for the first detected validation error.
+   */
   getErrorMessage(controlName: string): string {
     const control = this.appointmentForm.get(controlName);
     if (control?.hasError('required')) {
@@ -150,6 +197,11 @@ export class AppointmentForm implements OnInit {
     return '';
   }
 
+  /**
+   * Maps control names to user-facing labels.
+   * @param controlName Control name from the appointmentForm.
+   * @returns Label text for the control.
+   */
   getFieldLabel(controlName: string): string {
     const labels: { [key: string]: string } = {
       patientId: 'Patient',

@@ -14,9 +14,9 @@ import { IamStore } from '../../../application/iam.store';
 import { User } from '../../../domain/model/user.entity';
 
 /**
- * Register Component
- * @description This component handles the registration process for new users.
- * It includes form validation, password matching, and role selection.
+ *
+ * Registration page for new users with validation, password match, and role selection.
+ * Uses reactive forms and Angular Material; persists via IamStore mock flow.
  */
 @Component({
   selector: 'app-register',
@@ -38,16 +38,33 @@ import { User } from '../../../domain/model/user.entity';
   styleUrls: ['./register.css']
 })
 export class Register {
+  /**
+   *
+   * DI: form builder, store, router, and snackbar.
+   */
   private fb = inject(FormBuilder);
   private iamStore = inject(IamStore);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
 
+  /**
+   *
+   * UI state signals for password visibility and loading.
+   */
   readonly hidePassword = signal(true);
   readonly hideConfirmPassword = signal(true);
   readonly loading = signal(false);
+
+  /**
+   *
+   * Available roles to populate the role selector.
+   */
   readonly roles = this.iamStore.roles;
 
+  /**
+   *
+   * Registration form group with validators and cross-field password matcher.
+   */
   registerForm: FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
     lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -60,22 +77,22 @@ export class Register {
     validators: this.passwordMatchValidator
   });
 
+  /**
+   *
+   * Cross-field validator to ensure password and confirmPassword match.
+   * @param control Root form group.
+   * @returns ValidationErrors when mismatched; otherwise null.
+   */
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
-
-    if (!password || !confirmPassword) {
-      return null;
-    }
-
+    if (!password || !confirmPassword) return null;
     return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
 
   /**
-   * Submit Registration
-   * @description This function handles the submission of the registration form.
-   * It validates the form, creates a new user, and navigates to the login page on success.
-   * If registration fails, it displays an error message using the MatSnackBar service.
+   *
+   * Submits the registration form, creates a new user, and redirects to login (mocked).
    */
   onSubmit(): void {
     if (this.registerForm.invalid) {
@@ -99,30 +116,36 @@ export class Register {
 
     setTimeout(() => {
       this.iamStore.addUser(newUser);
-
       this.snackBar.open('Registration successful! Please login.', 'Close', {
         duration: 3000,
         panelClass: ['success-snackbar']
       });
-
       this.loading.set(false);
       this.router.navigate(['/iam/login']);
     }, 1500);
   }
 
+  /**
+   *
+   * Toggles visibility of the password field.
+   */
   togglePasswordVisibility(): void {
     this.hidePassword.update(value => !value);
   }
 
+  /**
+   *
+   * Toggles visibility of the confirm password field.
+   */
   toggleConfirmPasswordVisibility(): void {
     this.hideConfirmPassword.update(value => !value);
   }
 
   /**
-   * Get Error Message
-   * @description This function returns the appropriate error message for a given form field.
-   * @param field - The name of the form field.
-   * @returns The error message for the specified field.
+   *
+   * Returns a user-friendly validation message for the specified field.
+   * @param field Form control name.
+   * @returns Error string or empty when valid.
    */
   getErrorMessage(field: string): string {
     const control = this.registerForm.get(field);
@@ -130,27 +153,28 @@ export class Register {
     if (control?.hasError('required')) {
       return `${this.getFieldLabel(field)} is required`;
     }
-
     if (control?.hasError('email')) {
       return 'Please enter a valid email';
     }
-
     if (control?.hasError('minlength')) {
       const minLength = control.getError('minlength').requiredLength;
       return `${this.getFieldLabel(field)} must be at least ${minLength} characters`;
     }
-
     if (control?.hasError('min')) {
       return `Please select a ${this.getFieldLabel(field).toLowerCase()}`;
     }
-
     if (field === 'confirmPassword' && this.registerForm.hasError('passwordMismatch')) {
       return 'Passwords do not match';
     }
-
     return '';
   }
 
+  /**
+   *
+   * Maps form control keys to human-friendly labels.
+   * @param field Form control name.
+   * @returns Label string.
+   */
   getFieldLabel(field: string): string {
     const labels: { [key: string]: string } = {
       firstName: 'First name',
@@ -163,6 +187,12 @@ export class Register {
     return labels[field] || field;
   }
 
+  /**
+   *
+   * Indicates whether a control is both invalid and touched.
+   * @param field Form control name.
+   * @returns True if control shows an error state, otherwise false.
+   */
   hasError(field: string): boolean {
     const control = this.registerForm.get(field);
     return !!(control?.invalid && control?.touched);
