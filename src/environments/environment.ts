@@ -1,7 +1,7 @@
 export const environmentProduction = {
   production: false,
 
-  carelinkProviderApiBaseUrl: 'https://api-fake-carlink.onrender.com',
+  carelinkProviderApiBaseUrl: 'https://care-link-exhpd6dmbsg9etar.eastus2-01.azurewebsites.net/api/v1',
 
   carelinkProviderPatientsEndpointPath: '/patients',
   carelinkProviderDoctorsEndpointPath: '/doctors',

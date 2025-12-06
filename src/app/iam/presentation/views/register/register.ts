@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { IamStore } from '../../../application/iam.store';
 import { User } from '../../../domain/model/user.entity';
+import { AuthApi } from '../../../infrastructure/api/auth-api';
 
 /**
  *
@@ -46,6 +47,7 @@ export class Register {
   private iamStore = inject(IamStore);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private readonly authApi = inject(AuthApi);
 
   /**
    *
@@ -103,26 +105,41 @@ export class Register {
     this.loading.set(true);
     const formValue = this.registerForm.value;
 
-    const newUser = new User({
-      id: 0,
-      email: formValue.email,
-      password: formValue.password,
+    const payload = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
-      roleId: formValue.roleId,
-      isActive: true,
-      createdAt: new Date().toISOString()
-    });
+      email: formValue.email,
+      password: formValue.password,
+      // según tu lógica de roles en el form:
+      roles: formValue.roleId ? [formValue.roleId] : undefined
+      // por ejemplo, si roleId tiene "DOCTOR" / "PATIENT"
+    };
 
-    setTimeout(() => {
-      this.iamStore.addUser(newUser);
-      this.snackBar.open('Registration successful! Please login.', 'Close', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-      this.loading.set(false);
-      this.router.navigate(['/iam/login']);
-    }, 1500);
+    this.authApi.register(payload).subscribe({
+      next: () => {
+        this.snackBar.open('Registration successful! Please login.', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['/iam/login']);
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this.snackBar.open('Email already registered', 'Close', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        } else {
+          this.snackBar.open('Registration failed', 'Close', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      },
+      complete: () => {
+        this.loading.set(false);
+      }
+    });
   }
 
   /**

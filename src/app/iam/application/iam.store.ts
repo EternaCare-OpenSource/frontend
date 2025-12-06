@@ -5,6 +5,8 @@ import {User} from '../domain/model/user.entity';
 import {Role} from '../domain/model/role.entity';
 import {IamApi} from '../infrastructure/api/iam-api';
 import {TokenService} from '../../shared/services/token.service';
+import { AuthApi, AuthResponse } from '../infrastructure/api/auth-api';
+import { catchError, finalize, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,8 @@ import {TokenService} from '../../shared/services/token.service';
 export class IamStore {
   private readonly destroyRef = inject(DestroyRef);
   private readonly tokenService = inject(TokenService);
+  private readonly authApi = inject(AuthApi);
+
 
   readonly userCount = computed(() => this.users().length);
   readonly roleCount = computed(() => this.roles().length);
@@ -28,16 +32,36 @@ export class IamStore {
   private readonly errorSignal = signal<string | null>(null);
   readonly error = this.errorSignal.asReadonly();
 
-  readonly currentUser = computed(() => {
+  readonly currentUser = computed<User | null>(() => {
     const tokenUser = this.tokenService.currentUser();
     if (!tokenUser) return null;
-    return this.users().find(u => u.id === tokenUser.id) || null;
-  });
 
+    const prettyRoleName =
+      tokenUser.role.charAt(0) + tokenUser.role.slice(1).toLowerCase();
+
+    const role = new Role({
+      id: 0,
+      name: prettyRoleName,
+      description: '',
+      permissions: []
+    });
+
+    return new User({
+      id: tokenUser.id,
+      email: tokenUser.email,
+      password: '',
+      firstName: tokenUser.firstName,
+      lastName: tokenUser.lastName,
+      roleId: 0,
+      isActive: true,
+      createdAt: '',
+      role
+    });
+  });
   readonly isAuthenticated = computed(() => this.tokenService.hasUser());
 
   constructor(private iamApi: IamApi) {
-    this.loadData();
+    //this.loadData();
   }
 
   getRoleById(id: number): Signal<Role | undefined> {
@@ -56,19 +80,40 @@ export class IamStore {
     );
   }
 
-  login(email: string, password: string): boolean {
-    const user = this.users().find(u => u.email === email && u.password === password);
-    if (user) {
-      const roleName = user.role?.name || '';
-      this.tokenService.setCurrentUser({
-        id: user.id,
-        email: user.email,
-        role: roleName
-      });
-      return true;
-    }
-    return false;
+  login(email: string, password: string) {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    return this.authApi.login({ email, password }).pipe(
+      map((response: AuthResponse) => {
+        // Normalizamos los roles que vienen del backend:
+        // - si vienen como ["PATIENT"] los dejamos igual
+        // - si vienen como ["ROLE_DOCTOR"] los convertimos a ["DOCTOR"]
+        const normalizedRoles =
+          (response.roles ?? []).map(r =>
+            r.startsWith('ROLE_') ? r.substring(5) : r
+          );
+
+        const mainRole =
+          normalizedRoles.length > 0 ? normalizedRoles[0].toUpperCase() : 'PATIENT';
+
+        this.tokenService.setCurrentUser({
+          id: response.userId,
+          email: response.email,
+          role: mainRole,          // 👈 ESTE es el que usan los guards
+          token: response.token,
+          roles: normalizedRoles,
+          firstName: response.firstName,
+          lastName: response.lastName
+        });
+
+        return true;
+      })
+      // catchError + finalize los dejas igual si ya los tienes
+    );
   }
+
+
 
   logout(): void {
     this.tokenService.clearCurrentUser();

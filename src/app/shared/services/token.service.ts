@@ -3,7 +3,11 @@ import { Injectable, signal } from '@angular/core';
 export interface CurrentUser {
   id: number;
   email: string;
-  role: string;
+  role: string;       // rol principal usado por los guards
+  token: string;      // JWT
+  roles: string[];    // todos los roles
+  firstName: string;
+  lastName: string;
 }
 
 @Injectable({
@@ -30,8 +34,9 @@ export class TokenService {
 
   getToken(): string | null {
     const user = this.currentUser();
-    return user ? `Bearer user-${user.id}-token` : null;
+    return user ? `Bearer ${user.token}` : null;
   }
+
 
   clearCurrentUser(): void {
     localStorage.removeItem(this.CURRENT_USER_KEY);

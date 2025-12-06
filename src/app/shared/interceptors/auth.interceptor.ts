@@ -26,11 +26,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         tokenService.clearCurrentUser();
         router.navigate(['/iam/login']);
       }
-      if (error.status === 403) {
-        router.navigate(['/access-denied']);
-      }
+
+      // if (error.status === 403) {
+      //   router.navigate(['/access-denied']);
+      // }
 
       return throwError(() => error);
     })
   );
+
+
 };

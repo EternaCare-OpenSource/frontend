@@ -70,24 +70,31 @@ export class Login {
     this.loading.set(true);
     const { email, password } = this.loginForm.value;
 
-    setTimeout(() => {
-      const success = this.iamStore.login(email, password);
-
-      if (success) {
-        this.snackBar.open('Login successful!', 'Close', {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        });
-        this.router.navigate(['/home']);
-      } else {
-        this.snackBar.open('Invalid credentials', 'Close', {
+    this.iamStore.login(email, password).subscribe({
+      next: (success) => {
+        if (success) {
+          this.snackBar.open('Login successful!', 'Close', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.router.navigate(['/home']);
+        } else {
+          this.snackBar.open('Invalid credentials', 'Close', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      },
+      error: () => {
+        this.snackBar.open('Unexpected error during login', 'Close', {
           duration: 3000,
           panelClass: ['error-snackbar']
         });
+      },
+      complete: () => {
+        this.loading.set(false);
       }
-
-      this.loading.set(false);
-    }, 1000);
+    });
   }
 
   /**
